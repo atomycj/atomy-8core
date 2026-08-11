@@ -1,0 +1,82 @@
+export type CoreItemKey =
+  | "reading"
+  | "media"
+  | "product_use"
+  | "stp"
+  | "delivery"
+  | "meeting"
+  | "trust"
+  | "health";
+
+export interface CoreItemDef {
+  key: CoreItemKey;
+  order: number;
+  emoji: string;
+  label: string;
+  description: string;
+}
+
+export const CORE_ITEMS: CoreItemDef[] = [
+  {
+    key: "reading",
+    order: 1,
+    emoji: "📖",
+    label: "책 읽기",
+    description: "오늘 읽은 책/내용을 기록하세요",
+  },
+  {
+    key: "media",
+    order: 2,
+    emoji: "🎬",
+    label: "VOD/세미나 시청",
+    description: "시청한 VOD, 세미나, 강의 내용을 기록하세요",
+  },
+  {
+    key: "product_use",
+    order: 3,
+    emoji: "🛍️",
+    label: "제품 애용",
+    description: "오늘 애용한 제품과 후기를 기록하세요",
+  },
+  {
+    key: "stp",
+    order: 4,
+    emoji: "💼",
+    label: "사업 설명 (STP)",
+    description: "진행한 사업설명(STP) 내용을 기록하세요",
+  },
+  {
+    key: "delivery",
+    order: 5,
+    emoji: "📦",
+    label: "소비자 전달",
+    description: "소비자에게 전달한 내용을 기록하세요",
+  },
+  {
+    key: "meeting",
+    order: 6,
+    emoji: "🤝",
+    label: "미팅 참석",
+    description: "참석한 미팅/모임을 기록하세요",
+  },
+  {
+    key: "trust",
+    order: 7,
+    emoji: "🫱",
+    label: "신뢰 쌓기",
+    description: "신뢰를 쌓기 위한 활동을 기록하세요",
+  },
+  {
+    key: "health",
+    order: 8,
+    emoji: "💪",
+    label: "체력 관리",
+    description: "오늘의 체력 관리 활동을 기록하세요",
+  },
+];
+
+export function getCoreItem(key: CoreItemKey): CoreItemDef {
+  const item = CORE_ITEMS.find((i) => i.key === key);
+  if (!item) throw new Error(`Unknown core item: ${key}`);
+  return item;
+}
