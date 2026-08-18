@@ -42,3 +42,9 @@ export type GroupMember = {
   display_name: string | null;
   joined_at: string;
 };
+
+export type GroupOption = {
+  id: string;
+  name: string;
+  member_count: number;
+};

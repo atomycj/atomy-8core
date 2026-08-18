@@ -203,6 +203,22 @@ as $$
 $$;
 grant execute on function public.list_my_groups() to authenticated;
 
+create or replace function public.list_all_groups()
+returns table (id uuid, name text, member_count bigint)
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select
+    g.id,
+    g.name,
+    (select count(*) from public.group_members gm where gm.group_id = g.id) as member_count
+  from public.groups g
+  order by g.name asc;
+$$;
+grant execute on function public.list_all_groups() to authenticated;
+
 create or replace function public.list_group_members(p_group_id uuid)
 returns table (user_id uuid, email text, display_name text, joined_at timestamptz)
 language sql

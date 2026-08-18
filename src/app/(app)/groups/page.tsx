@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { format } from "date-fns";
 import { createClient } from "@/lib/supabase/server";
-import type { GroupSummary } from "@/lib/types";
+import type { GroupOption, GroupSummary } from "@/lib/types";
 import GroupForms from "@/components/GroupForms";
 import { createGroupAction, joinGroupAction } from "./actions";
 
@@ -10,17 +10,20 @@ export default async function GroupsPage() {
   const { data: userData } = await supabase.auth.getUser();
   const userId = userData.user!.id;
 
-  const [{ data: myGroups }, { data: profile }] = await Promise.all([
-    supabase.rpc("list_my_groups"),
-    supabase
-      .from("profiles")
-      .select("can_create_groups")
-      .eq("id", userId)
-      .maybeSingle(),
-  ]);
+  const [{ data: myGroups }, { data: profile }, { data: allGroups }] =
+    await Promise.all([
+      supabase.rpc("list_my_groups"),
+      supabase
+        .from("profiles")
+        .select("can_create_groups")
+        .eq("id", userId)
+        .maybeSingle(),
+      supabase.rpc("list_all_groups"),
+    ]);
 
   const groups = (myGroups ?? []) as GroupSummary[];
   const canCreate = Boolean(profile?.can_create_groups);
+  const joinableGroups = (allGroups ?? []) as GroupOption[];
 
   return (
     <div className="space-y-6">
@@ -33,6 +36,7 @@ export default async function GroupsPage() {
 
       <GroupForms
         canCreate={canCreate}
+        joinableGroups={joinableGroups}
         createAction={createGroupAction}
         joinAction={joinGroupAction}
       />

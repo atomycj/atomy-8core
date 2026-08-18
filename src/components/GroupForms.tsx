@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import type { GroupOption } from "@/lib/types";
 
 type GroupActionResult =
   | { success: true; group: { id: string; name: string } }
@@ -9,12 +10,14 @@ type GroupActionResult =
 
 type GroupFormsProps = {
   canCreate: boolean;
+  joinableGroups: GroupOption[];
   createAction: (formData: FormData) => Promise<GroupActionResult>;
   joinAction: (formData: FormData) => Promise<GroupActionResult>;
 };
 
 export default function GroupForms({
   canCreate,
+  joinableGroups,
   createAction,
   joinAction,
 }: GroupFormsProps) {
@@ -76,14 +79,29 @@ export default function GroupForms({
           className="mt-4 space-y-3"
         >
           <p className="text-xs text-gray-400">
-            그룹 이름과 비밀번호를 입력해서 기존 그룹에 참여하세요.
+            그룹을 선택하고 비밀번호를 입력해서 참여하세요.
           </p>
-          <input
-            name="name"
-            required
-            placeholder="그룹 이름"
-            className="w-full rounded-xl border border-gray-200 bg-gray-50 p-3 text-sm outline-none focus:border-orange-300 focus:bg-white focus:ring-2 focus:ring-orange-100"
-          />
+          {joinableGroups.length > 0 ? (
+            <select
+              name="name"
+              required
+              defaultValue=""
+              className="w-full rounded-xl border border-gray-200 bg-gray-50 p-3 text-sm outline-none focus:border-orange-300 focus:bg-white focus:ring-2 focus:ring-orange-100"
+            >
+              <option value="" disabled>
+                그룹 선택
+              </option>
+              {joinableGroups.map((group) => (
+                <option key={group.id} value={group.name}>
+                  {group.name} ({group.member_count}명)
+                </option>
+              ))}
+            </select>
+          ) : (
+            <p className="rounded-xl border border-dashed border-gray-200 p-3 text-center text-sm text-gray-400">
+              아직 생성된 그룹이 없어요.
+            </p>
+          )}
           <input
             name="password"
             type="password"
@@ -93,7 +111,7 @@ export default function GroupForms({
           />
           <button
             type="submit"
-            disabled={isPending}
+            disabled={isPending || joinableGroups.length === 0}
             className="w-full rounded-xl bg-orange-500 px-4 py-2.5 text-sm font-semibold text-white hover:bg-orange-600 disabled:opacity-60"
           >
             {isPending ? "참여 중..." : "참여하기"}
