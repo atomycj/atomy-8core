@@ -45,7 +45,7 @@ export default function PersonalDayView({
         </div>
       </div>
 
-      <div className="space-y-2">
+      <div className="space-y-2 md:grid md:grid-cols-2 md:gap-3 md:space-y-0">
         {CORE_ITEMS.map((item) => {
           const value = record?.[item.key]?.trim();
           return (
