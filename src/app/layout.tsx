@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { getLocale } from "@/lib/i18n/locale";
+import { getDictionary } from "@/lib/i18n/dictionaries";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -12,15 +14,25 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "8코어 기록장",
-  description: "매일의 8가지 성공습관을 기록하고 팀과 공유하는 앱",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  const dict = getDictionary(locale);
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+  return {
+    title: dict.appName,
+    description:
+      locale === "en"
+        ? "Track your daily 8 Core habits and share them with your team"
+        : "매일의 8가지 성공습관을 기록하고 팀과 공유하는 앱",
+  };
+}
+
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const locale = await getLocale();
+
   return (
     <html
-      lang="ko"
+      lang={locale}
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>

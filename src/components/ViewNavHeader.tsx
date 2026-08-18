@@ -7,6 +7,8 @@ type ViewNavHeaderProps = {
   prev: string;
   next: string;
   label: string;
+  prevLabel: string;
+  nextLabel: string;
 };
 
 export default function ViewNavHeader({
@@ -15,6 +17,8 @@ export default function ViewNavHeader({
   prev,
   next,
   label,
+  prevLabel,
+  nextLabel,
 }: ViewNavHeaderProps) {
   return (
     <div className="flex items-center justify-between">
@@ -22,14 +26,14 @@ export default function ViewNavHeader({
         href={`${basePath}?view=${view}&date=${prev}`}
         className="rounded-lg px-2 py-1 text-sm text-gray-400 hover:bg-gray-100"
       >
-        ← 이전
+        ← {prevLabel}
       </Link>
       <span className="text-sm font-bold text-gray-900">{label}</span>
       <Link
         href={`${basePath}?view=${view}&date=${next}`}
         className="rounded-lg px-2 py-1 text-sm text-gray-400 hover:bg-gray-100"
       >
-        다음 →
+        {nextLabel} →
       </Link>
     </div>
   );

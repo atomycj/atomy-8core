@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import type { GroupOption } from "@/lib/types";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
 
 type GroupActionResult =
   | { success: true; group: { id: string; name: string } }
@@ -13,6 +14,7 @@ type GroupFormsProps = {
   joinableGroups: GroupOption[];
   createAction: (formData: FormData) => Promise<GroupActionResult>;
   joinAction: (formData: FormData) => Promise<GroupActionResult>;
+  dict: Dictionary["groups"]["forms"];
 };
 
 export default function GroupForms({
@@ -20,6 +22,7 @@ export default function GroupForms({
   joinableGroups,
   createAction,
   joinAction,
+  dict,
 }: GroupFormsProps) {
   const router = useRouter();
   const [tab, setTab] = useState<"join" | "create">("join");
@@ -56,7 +59,7 @@ export default function GroupForms({
               : "text-gray-400 hover:bg-gray-100"
           }`}
         >
-          그룹 참여
+          {dict.joinTab}
         </button>
         {canCreate && (
           <button
@@ -68,7 +71,7 @@ export default function GroupForms({
                 : "text-gray-400 hover:bg-gray-100"
             }`}
           >
-            그룹 만들기
+            {dict.createTab}
           </button>
         )}
       </div>
@@ -78,9 +81,7 @@ export default function GroupForms({
           onSubmit={(e) => handleSubmit(e, joinAction)}
           className="mt-4 space-y-3"
         >
-          <p className="text-xs text-gray-400">
-            그룹을 선택하고 비밀번호를 입력해서 참여하세요.
-          </p>
+          <p className="text-xs text-gray-400">{dict.joinHelp}</p>
           {joinableGroups.length > 0 ? (
             <select
               name="name"
@@ -89,24 +90,24 @@ export default function GroupForms({
               className="w-full rounded-xl border border-gray-200 bg-gray-50 p-3 text-sm outline-none focus:border-orange-300 focus:bg-white focus:ring-2 focus:ring-orange-100"
             >
               <option value="" disabled>
-                그룹 선택
+                {dict.selectPlaceholder}
               </option>
               {joinableGroups.map((group) => (
                 <option key={group.id} value={group.name}>
-                  {group.name} ({group.member_count}명)
+                  {group.name} ({dict.memberSuffix(group.member_count)})
                 </option>
               ))}
             </select>
           ) : (
             <p className="rounded-xl border border-dashed border-gray-200 p-3 text-center text-sm text-gray-400">
-              아직 생성된 그룹이 없어요.
+              {dict.noGroups}
             </p>
           )}
           <input
             name="password"
             type="password"
             required
-            placeholder="그룹 비밀번호"
+            placeholder={dict.passwordPlaceholder}
             className="w-full rounded-xl border border-gray-200 bg-gray-50 p-3 text-sm outline-none focus:border-orange-300 focus:bg-white focus:ring-2 focus:ring-orange-100"
           />
           <button
@@ -114,7 +115,7 @@ export default function GroupForms({
             disabled={isPending || joinableGroups.length === 0}
             className="w-full rounded-xl bg-orange-500 px-4 py-2.5 text-sm font-semibold text-white hover:bg-orange-600 disabled:opacity-60"
           >
-            {isPending ? "참여 중..." : "참여하기"}
+            {isPending ? dict.joinSubmitting : dict.joinSubmit}
           </button>
         </form>
       ) : (
@@ -122,13 +123,11 @@ export default function GroupForms({
           onSubmit={(e) => handleSubmit(e, createAction)}
           className="mt-4 space-y-3"
         >
-          <p className="text-xs text-gray-400">
-            새 그룹을 만들고 팀원에게 비밀번호를 공유하세요.
-          </p>
+          <p className="text-xs text-gray-400">{dict.createHelp}</p>
           <input
             name="name"
             required
-            placeholder="그룹 이름"
+            placeholder={dict.namePlaceholder}
             className="w-full rounded-xl border border-gray-200 bg-gray-50 p-3 text-sm outline-none focus:border-orange-300 focus:bg-white focus:ring-2 focus:ring-orange-100"
           />
           <input
@@ -136,7 +135,7 @@ export default function GroupForms({
             type="password"
             required
             minLength={4}
-            placeholder="그룹 비밀번호 (4자 이상)"
+            placeholder={dict.createPasswordPlaceholder}
             className="w-full rounded-xl border border-gray-200 bg-gray-50 p-3 text-sm outline-none focus:border-orange-300 focus:bg-white focus:ring-2 focus:ring-orange-100"
           />
           <button
@@ -144,7 +143,7 @@ export default function GroupForms({
             disabled={isPending}
             className="w-full rounded-xl bg-orange-500 px-4 py-2.5 text-sm font-semibold text-white hover:bg-orange-600 disabled:opacity-60"
           >
-            {isPending ? "생성 중..." : "그룹 만들기"}
+            {isPending ? dict.createSubmitting : dict.createSubmit}
           </button>
         </form>
       )}

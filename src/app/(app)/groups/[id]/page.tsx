@@ -4,6 +4,8 @@ import { eachDayOfInterval, format } from "date-fns";
 import { createClient } from "@/lib/supabase/server";
 import type { DailyRecord, GroupMember, GroupSummary } from "@/lib/types";
 import { getViewNav, parseAnchorDate, parseView } from "@/lib/view-nav";
+import { getLocale } from "@/lib/i18n/locale";
+import { getDictionary } from "@/lib/i18n/dictionaries";
 import ViewTabs from "@/components/ViewTabs";
 import ViewNavHeader from "@/components/ViewNavHeader";
 import GroupMemberCard from "@/components/GroupMemberCard";
@@ -21,7 +23,9 @@ export default async function GroupDetailPage({
   const { view: viewParam, date: dateParam } = await searchParams;
   const view = parseView(viewParam);
   const anchor = parseAnchorDate(dateParam);
-  const nav = getViewNav(view, anchor);
+  const locale = await getLocale();
+  const dict = getDictionary(locale);
+  const nav = getViewNav(view, anchor, locale);
 
   const supabase = await createClient();
   const { data: userData } = await supabase.auth.getUser();
@@ -61,14 +65,21 @@ export default async function GroupDetailPage({
     <div className="space-y-5">
       <div>
         <Link href="/groups" className="text-xs text-gray-400 hover:text-gray-600">
-          ← 그룹 목록
+          {dict.groups.detail.backLink}
         </Link>
         <div className="mt-1 flex flex-wrap items-center justify-between gap-3">
           <div>
             <h1 className="text-lg font-bold text-gray-900">{group.name}</h1>
-            <p className="mt-1 text-sm text-gray-500">멤버 {group.member_count}명</p>
+            <p className="mt-1 text-sm text-gray-500">
+              {dict.groups.detail.memberCount(group.member_count)}
+            </p>
           </div>
-          <ViewTabs basePath={`/groups/${id}`} view={view} anchorDate={anchor} />
+          <ViewTabs
+            basePath={`/groups/${id}`}
+            view={view}
+            anchorDate={anchor}
+            labels={dict.dashboard.viewTabs}
+          />
         </div>
       </div>
 
@@ -78,6 +89,8 @@ export default async function GroupDetailPage({
         prev={nav.prev}
         next={nav.next}
         label={nav.label}
+        prevLabel={dict.common.prev}
+        nextLabel={dict.common.next}
       />
 
       {view === "day" && (
@@ -91,6 +104,8 @@ export default async function GroupDetailPage({
                 member={member}
                 isMe={member.user_id === userId}
                 values={record}
+                locale={locale}
+                dict={dict}
               />
             );
           })}
@@ -103,6 +118,8 @@ export default async function GroupDetailPage({
           members={members}
           weekDates={rangeDates}
           recordsByUserDate={recordsByUserDate}
+          locale={locale}
+          dict={dict}
         />
       )}
 
@@ -111,6 +128,7 @@ export default async function GroupDetailPage({
           members={members}
           monthDates={rangeDates}
           recordsByUserDate={recordsByUserDate}
+          dict={dict}
         />
       )}
     </div>

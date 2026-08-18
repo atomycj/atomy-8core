@@ -2,24 +2,24 @@ import Link from "next/link";
 import { format } from "date-fns";
 import type { ViewMode } from "@/lib/view-nav";
 
-const LABELS: Record<ViewMode, string> = {
-  day: "일간",
-  week: "주간",
-  month: "월간",
-};
-
 type ViewTabsProps = {
   basePath: string;
   view: ViewMode;
   anchorDate: Date;
+  labels: Record<ViewMode, string>;
 };
 
-export default function ViewTabs({ basePath, view, anchorDate }: ViewTabsProps) {
+export default function ViewTabs({
+  basePath,
+  view,
+  anchorDate,
+  labels,
+}: ViewTabsProps) {
   const date = format(anchorDate, "yyyy-MM-dd");
 
   return (
     <div className="inline-flex rounded-xl border border-gray-200 bg-white p-1">
-      {(Object.keys(LABELS) as ViewMode[]).map((mode) => (
+      {(Object.keys(labels) as ViewMode[]).map((mode) => (
         <Link
           key={mode}
           href={`${basePath}?view=${mode}&date=${date}`}
@@ -29,7 +29,7 @@ export default function ViewTabs({ basePath, view, anchorDate }: ViewTabsProps) 
               : "text-gray-400 hover:bg-gray-100 hover:text-gray-600"
           }`}
         >
-          {LABELS[mode]}
+          {labels[mode]}
         </Link>
       ))}
     </div>

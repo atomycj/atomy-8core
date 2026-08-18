@@ -3,17 +3,23 @@
 import { useState } from "react";
 import { CORE_ITEMS } from "@/lib/core-items";
 import type { DailyRecord, GroupMember } from "@/lib/types";
+import type { Locale } from "@/lib/i18n/locale";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
 
 type GroupMemberCardProps = {
   member: GroupMember;
   isMe: boolean;
   values: DailyRecord | null;
+  locale: Locale;
+  dict: Dictionary;
 };
 
 export default function GroupMemberCard({
   member,
   isMe,
   values,
+  locale,
+  dict,
 }: GroupMemberCardProps) {
   const [open, setOpen] = useState(false);
   const filled = values
@@ -32,7 +38,7 @@ export default function GroupMemberCard({
             {member.display_name || member.email}
             {isMe && (
               <span className="ml-2 rounded-full bg-gray-100 px-2 py-0.5 text-[10px] font-medium text-gray-500">
-                나
+                {dict.groups.detail.me}
               </span>
             )}
           </p>
@@ -62,18 +68,18 @@ export default function GroupMemberCard({
               return (
                 <div key={item.key}>
                   <p className="text-xs font-semibold text-gray-600">
-                    {item.emoji} {item.label}
+                    {item.emoji} {item.label[locale]}
                   </p>
                   <p className="mt-0.5 whitespace-pre-wrap text-sm text-gray-700">
                     {value || (
-                      <span className="text-gray-300">(미작성)</span>
+                      <span className="text-gray-300">{dict.common.notWritten}</span>
                     )}
                   </p>
                 </div>
               );
             })
           ) : (
-            <p className="text-sm text-gray-400">이 날짜에 작성된 기록이 없어요.</p>
+            <p className="text-sm text-gray-400">{dict.groups.detail.noRecord}</p>
           )}
         </div>
       )}

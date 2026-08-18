@@ -2,6 +2,8 @@ import Link from "next/link";
 import { format } from "date-fns";
 import { createClient } from "@/lib/supabase/server";
 import type { GroupOption, GroupSummary } from "@/lib/types";
+import { getLocale } from "@/lib/i18n/locale";
+import { getDictionary } from "@/lib/i18n/dictionaries";
 import GroupForms from "@/components/GroupForms";
 import { createGroupAction, joinGroupAction } from "./actions";
 
@@ -9,6 +11,8 @@ export default async function GroupsPage() {
   const supabase = await createClient();
   const { data: userData } = await supabase.auth.getUser();
   const userId = userData.user!.id;
+  const locale = await getLocale();
+  const dict = getDictionary(locale);
 
   const [{ data: myGroups }, { data: profile }, { data: allGroups }] =
     await Promise.all([
@@ -28,10 +32,8 @@ export default async function GroupsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-lg font-bold text-gray-900">그룹</h1>
-        <p className="mt-1 text-sm text-gray-500">
-          그룹에 참여하면 팀원들의 8코어 기록을 함께 볼 수 있어요.
-        </p>
+        <h1 className="text-lg font-bold text-gray-900">{dict.groups.title}</h1>
+        <p className="mt-1 text-sm text-gray-500">{dict.groups.subtitle}</p>
       </div>
 
       <GroupForms
@@ -39,10 +41,13 @@ export default async function GroupsPage() {
         joinableGroups={joinableGroups}
         createAction={createGroupAction}
         joinAction={joinGroupAction}
+        dict={dict.groups.forms}
       />
 
       <section>
-        <h2 className="text-sm font-semibold text-gray-700">내 그룹</h2>
+        <h2 className="text-sm font-semibold text-gray-700">
+          {dict.groups.myGroupsTitle}
+        </h2>
         <div className="mt-3 space-y-2">
           {groups.map((group) => (
             <Link
@@ -55,12 +60,15 @@ export default async function GroupsPage() {
                   {group.name}
                   {group.is_owner && (
                     <span className="ml-2 rounded-full bg-orange-100 px-2 py-0.5 text-[10px] font-semibold text-orange-600">
-                      개설자
+                      {dict.groups.ownerBadge}
                     </span>
                   )}
                 </p>
                 <p className="mt-0.5 text-xs text-gray-400">
-                  멤버 {group.member_count}명 · {format(new Date(group.created_at), "yyyy-MM-dd")} 개설
+                  {dict.groups.memberCountLabel(
+                    group.member_count,
+                    format(new Date(group.created_at), "yyyy-MM-dd")
+                  )}
                 </p>
               </div>
               <span className="text-gray-300">→</span>
@@ -68,7 +76,7 @@ export default async function GroupsPage() {
           ))}
           {groups.length === 0 && (
             <p className="rounded-xl border border-dashed border-gray-200 p-6 text-center text-sm text-gray-400">
-              아직 참여한 그룹이 없어요. 위에서 그룹에 참여하거나 만들어보세요.
+              {dict.groups.emptyGroups}
             </p>
           )}
         </div>

@@ -1,23 +1,40 @@
 import Link from "next/link";
+import Image from "next/image";
 import { format } from "date-fns";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
+import type { Locale } from "@/lib/i18n/locale";
+import LanguageToggle from "./LanguageToggle";
 
 type NavbarProps = {
   userName: string;
   userAvatar?: string | null;
   isAdmin?: boolean;
+  locale: Locale;
+  dict: Dictionary;
 };
 
-export default function Navbar({ userName, userAvatar, isAdmin }: NavbarProps) {
+export default function Navbar({
+  userName,
+  userAvatar,
+  isAdmin,
+  locale,
+  dict,
+}: NavbarProps) {
   const today = format(new Date(), "yyyy-MM-dd");
 
   return (
     <header className="sticky top-0 z-10 border-b border-gray-100 bg-white/80 backdrop-blur">
       <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-3">
         <Link href="/dashboard" className="flex items-center gap-2">
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-orange-500 text-sm font-bold text-white">
-            8
-          </span>
-          <span className="text-sm font-bold text-gray-900">8코어 기록장</span>
+          <Image
+            src="/logo-nav.png"
+            alt={dict.appName}
+            width={266}
+            height={160}
+            priority
+            className="h-8 w-auto"
+          />
+          <span className="text-sm font-bold text-gray-900">{dict.appName}</span>
         </Link>
 
         <nav className="flex items-center gap-1 text-sm font-medium text-gray-500">
@@ -25,37 +42,38 @@ export default function Navbar({ userName, userAvatar, isAdmin }: NavbarProps) {
             href="/dashboard"
             className="rounded-lg px-3 py-1.5 hover:bg-gray-100 hover:text-gray-900"
           >
-            대시보드
+            {dict.nav.dashboard}
           </Link>
           <Link
             href={`/record/${today}`}
             className="rounded-lg px-3 py-1.5 hover:bg-gray-100 hover:text-gray-900"
           >
-            오늘 기록
+            {dict.nav.today}
           </Link>
           <Link
             href="/history"
             className="rounded-lg px-3 py-1.5 hover:bg-gray-100 hover:text-gray-900"
           >
-            히스토리
+            {dict.nav.history}
           </Link>
           <Link
             href="/groups"
             className="rounded-lg px-3 py-1.5 hover:bg-gray-100 hover:text-gray-900"
           >
-            그룹
+            {dict.nav.groups}
           </Link>
           {isAdmin && (
             <Link
               href="/admin"
               className="rounded-lg px-3 py-1.5 hover:bg-gray-100 hover:text-gray-900"
             >
-              관리자
+              {dict.nav.admin}
             </Link>
           )}
         </nav>
 
         <div className="flex items-center gap-3">
+          <LanguageToggle locale={locale} />
           <Link
             href="/profile"
             className="flex items-center gap-2 rounded-lg px-1.5 py-1 hover:bg-gray-100"
@@ -80,7 +98,7 @@ export default function Navbar({ userName, userAvatar, isAdmin }: NavbarProps) {
               type="submit"
               className="rounded-lg border border-gray-200 px-3 py-1.5 text-xs font-medium text-gray-500 hover:bg-gray-50"
             >
-              로그아웃
+              {dict.nav.signOut}
             </button>
           </form>
         </div>

@@ -3,6 +3,8 @@ import { createClient } from "@/lib/supabase/server";
 import { CORE_ITEMS, type CoreItemKey } from "@/lib/core-items";
 import type { DailyRecord } from "@/lib/types";
 import { getViewerProfile } from "@/lib/profile";
+import { getLocale } from "@/lib/i18n/locale";
+import { getDictionary } from "@/lib/i18n/dictionaries";
 import RecordForm from "@/components/RecordForm";
 import { saveRecord } from "./actions";
 
@@ -36,6 +38,8 @@ export default async function RecordPage({
   ) as Record<CoreItemKey, string>;
 
   const { displayName: userName } = await getViewerProfile(supabase, user);
+  const locale = await getLocale();
+  const dict = getDictionary(locale);
 
   return (
     <RecordForm
@@ -43,6 +47,8 @@ export default async function RecordPage({
       userName={userName}
       initialValues={initialValues}
       saveAction={saveRecord}
+      locale={locale}
+      dict={dict}
     />
   );
 }

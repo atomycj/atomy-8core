@@ -1,14 +1,23 @@
 import Link from "next/link";
 import { CORE_ITEMS } from "@/lib/core-items";
 import type { DailyRecord } from "@/lib/types";
+import type { Locale } from "@/lib/i18n/locale";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
 import { filledCount } from "@/lib/stats";
 
 type PersonalDayViewProps = {
   date: string;
   record: DailyRecord | null;
+  locale: Locale;
+  dict: Dictionary;
 };
 
-export default function PersonalDayView({ date, record }: PersonalDayViewProps) {
+export default function PersonalDayView({
+  date,
+  record,
+  locale,
+  dict,
+}: PersonalDayViewProps) {
   const count = filledCount(record);
 
   return (
@@ -16,7 +25,7 @@ export default function PersonalDayView({ date, record }: PersonalDayViewProps) 
       <div className="rounded-2xl border border-orange-100 bg-white p-5 shadow-sm">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm text-gray-500">이 날의 진행률</p>
+            <p className="text-sm text-gray-500">{dict.dashboard.day.progressLabel}</p>
             <p className="mt-1 text-2xl font-bold text-gray-900">
               {count} / {CORE_ITEMS.length}
             </p>
@@ -25,7 +34,7 @@ export default function PersonalDayView({ date, record }: PersonalDayViewProps) 
             href={`/record/${date}`}
             className="rounded-xl bg-orange-500 px-4 py-2 text-sm font-semibold text-white hover:bg-orange-600"
           >
-            {record ? "기록 수정" : "기록 작성"}
+            {record ? dict.dashboard.day.editButton : dict.dashboard.day.createButton}
           </Link>
         </div>
         <div className="mt-4 h-2 w-full overflow-hidden rounded-full bg-gray-100">
@@ -46,10 +55,12 @@ export default function PersonalDayView({ date, record }: PersonalDayViewProps) 
             >
               <p className="flex items-center gap-2 text-sm font-semibold text-gray-800">
                 <span>{item.emoji}</span>
-                {item.label}
+                {item.label[locale]}
               </p>
               <p className="mt-1 whitespace-pre-wrap text-sm text-gray-600">
-                {value || <span className="text-gray-300">(미작성)</span>}
+                {value || (
+                  <span className="text-gray-300">{dict.common.notWritten}</span>
+                )}
               </p>
             </div>
           );

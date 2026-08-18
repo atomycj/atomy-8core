@@ -2,6 +2,7 @@
 
 import { useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
 
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
 const MAX_BYTES = 2 * 1024 * 1024;
@@ -10,12 +11,14 @@ type ProfileFormProps = {
   currentName: string;
   currentAvatar: string | null;
   updateAction: (formData: FormData) => Promise<void>;
+  dict: Dictionary;
 };
 
 export default function ProfileForm({
   currentName,
   currentAvatar,
   updateAction,
+  dict,
 }: ProfileFormProps) {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -30,14 +33,12 @@ export default function ProfileForm({
     if (!file) return;
 
     if (!ALLOWED_TYPES.includes(file.type)) {
-      setError(
-        "JPG, PNG, WEBP, GIF 이미지만 업로드할 수 있어요. (HEIC 등은 지원하지 않아요)"
-      );
+      setError(dict.profile.errorInvalidType);
       e.target.value = "";
       return;
     }
     if (file.size > MAX_BYTES) {
-      setError("이미지 용량은 2MB 이하여야 해요.");
+      setError(dict.profile.errorTooLarge);
       e.target.value = "";
       return;
     }
@@ -54,10 +55,10 @@ export default function ProfileForm({
     startTransition(async () => {
       try {
         await updateAction(formData);
-        setMessage("저장했어요.");
+        setMessage(dict.profile.savedMessage);
         router.refresh();
       } catch (err) {
-        setError(err instanceof Error ? err.message : "저장에 실패했습니다.");
+        setError(err instanceof Error ? err.message : dict.profile.errorGeneric);
       }
     });
   }
@@ -71,7 +72,7 @@ export default function ProfileForm({
         {preview ? (
           <img
             src={preview}
-            alt="프로필 사진"
+            alt={name}
             className="h-16 w-16 rounded-full object-cover"
           />
         ) : (
@@ -85,7 +86,7 @@ export default function ProfileForm({
             onClick={() => fileInputRef.current?.click()}
             className="rounded-lg border border-gray-200 px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-50"
           >
-            사진 변경
+            {dict.profile.changePhoto}
           </button>
           <input
             ref={fileInputRef}
@@ -95,9 +96,7 @@ export default function ProfileForm({
             onChange={handleFileChange}
             className="hidden"
           />
-          <p className="mt-1 text-[11px] text-gray-400">
-            JPG/PNG/WEBP/GIF, 2MB 이하
-          </p>
+          <p className="mt-1 text-[11px] text-gray-400">{dict.profile.photoHint}</p>
         </div>
       </div>
 
@@ -106,7 +105,7 @@ export default function ProfileForm({
           htmlFor="display_name"
           className="text-xs font-medium text-gray-500"
         >
-          표시 이름
+          {dict.profile.nameLabel}
         </label>
         <input
           id="display_name"
@@ -114,7 +113,7 @@ export default function ProfileForm({
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
-          placeholder="다른 사람에게 보여질 이름"
+          placeholder={dict.profile.namePlaceholder}
           className="mt-1 w-full rounded-xl border border-gray-200 bg-gray-50 p-3 text-sm outline-none focus:border-orange-300 focus:bg-white focus:ring-2 focus:ring-orange-100"
         />
       </div>
@@ -124,7 +123,7 @@ export default function ProfileForm({
         disabled={isPending}
         className="w-full rounded-xl bg-orange-500 px-4 py-2.5 text-sm font-semibold text-white hover:bg-orange-600 disabled:opacity-60"
       >
-        {isPending ? "저장 중..." : "저장하기"}
+        {isPending ? dict.common.saving : dict.common.save}
       </button>
 
       {message && <p className="text-sm text-green-600">{message}</p>}

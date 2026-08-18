@@ -3,6 +3,8 @@ import { createClient } from "@/lib/supabase/server";
 import type { DailyRecord } from "@/lib/types";
 import { computeCurrentStreak } from "@/lib/stats";
 import { getViewNav, parseAnchorDate, parseView } from "@/lib/view-nav";
+import { getLocale } from "@/lib/i18n/locale";
+import { getDictionary } from "@/lib/i18n/dictionaries";
 import ViewTabs from "@/components/ViewTabs";
 import ViewNavHeader from "@/components/ViewNavHeader";
 import PersonalDayView from "@/components/dashboard/PersonalDayView";
@@ -17,7 +19,9 @@ export default async function DashboardPage({
   const { view: viewParam, date: dateParam } = await searchParams;
   const view = parseView(viewParam);
   const anchor = parseAnchorDate(dateParam);
-  const nav = getViewNav(view, anchor);
+  const locale = await getLocale();
+  const dict = getDictionary(locale);
+  const nav = getViewNav(view, anchor, locale);
 
   const supabase = await createClient();
   const { data: userData } = await supabase.auth.getUser();
@@ -56,10 +60,15 @@ export default async function DashboardPage({
     <div className="space-y-5">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-lg font-bold text-gray-900">내 대시보드</h1>
-          <p className="mt-1 text-sm text-gray-500">연속 기록 {streak}일째</p>
+          <h1 className="text-lg font-bold text-gray-900">{dict.dashboard.title}</h1>
+          <p className="mt-1 text-sm text-gray-500">{dict.dashboard.streak(streak)}</p>
         </div>
-        <ViewTabs basePath="/dashboard" view={view} anchorDate={anchor} />
+        <ViewTabs
+          basePath="/dashboard"
+          view={view}
+          anchorDate={anchor}
+          labels={dict.dashboard.viewTabs}
+        />
       </div>
 
       <ViewNavHeader
@@ -68,17 +77,26 @@ export default async function DashboardPage({
         prev={nav.prev}
         next={nav.next}
         label={nav.label}
+        prevLabel={dict.common.prev}
+        nextLabel={dict.common.next}
       />
 
       {view === "day" && (
         <PersonalDayView
           date={format(anchor, "yyyy-MM-dd")}
           record={recordsByDate.get(format(anchor, "yyyy-MM-dd")) ?? null}
+          locale={locale}
+          dict={dict}
         />
       )}
 
       {view === "week" && (
-        <PersonalWeekView weekDates={weekDates} recordsByDate={recordsByDate} />
+        <PersonalWeekView
+          weekDates={weekDates}
+          recordsByDate={recordsByDate}
+          locale={locale}
+          dict={dict}
+        />
       )}
 
       {view === "month" && (
@@ -86,6 +104,8 @@ export default async function DashboardPage({
           monthStart={nav.rangeStart}
           calendarDays={calendarDays}
           recordsByDate={recordsByDate}
+          locale={locale}
+          dict={dict}
         />
       )}
     </div>

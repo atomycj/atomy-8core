@@ -10,12 +10,13 @@ import {
   subMonths,
   isSameMonth,
 } from "date-fns";
+import { enUS, ko } from "date-fns/locale";
 import { createClient } from "@/lib/supabase/server";
 import { CORE_ITEMS } from "@/lib/core-items";
 import type { DailyRecord } from "@/lib/types";
 import { filledCount } from "@/lib/stats";
-
-const WEEKDAY_LABELS = ["일", "월", "화", "수", "목", "금", "토"];
+import { getLocale } from "@/lib/i18n/locale";
+import { getDictionary } from "@/lib/i18n/dictionaries";
 
 export default async function HistoryPage({
   searchParams,
@@ -24,6 +25,9 @@ export default async function HistoryPage({
 }) {
   const { month: monthParam } = await searchParams;
   const anchor = monthParam ? new Date(`${monthParam}-01T00:00:00`) : new Date();
+  const locale = await getLocale();
+  const dict = getDictionary(locale);
+  const dateLocale = locale === "en" ? enUS : ko;
 
   const monthStart = startOfMonth(anchor);
   const monthEnd = endOfMonth(anchor);
@@ -46,34 +50,37 @@ export default async function HistoryPage({
     ((records ?? []) as DailyRecord[]).map((r) => [r.record_date, r])
   );
 
-  const monthLabel = format(monthStart, "yyyy년 M월");
+  const monthLabel =
+    locale === "en"
+      ? format(monthStart, "MMMM yyyy", { locale: dateLocale })
+      : format(monthStart, "yyyy년 M월", { locale: dateLocale });
   const prevMonth = format(subMonths(monthStart, 1), "yyyy-MM");
   const nextMonth = format(addMonths(monthStart, 1), "yyyy-MM");
 
   return (
     <div className="space-y-5">
       <div className="flex items-center justify-between">
-        <h1 className="text-lg font-bold text-gray-900">히스토리</h1>
+        <h1 className="text-lg font-bold text-gray-900">{dict.history.title}</h1>
         <div className="flex items-center gap-2 text-sm">
           <Link
             href={`/history?month=${prevMonth}`}
             className="rounded-lg px-2 py-1 text-gray-400 hover:bg-gray-100"
           >
-            ← 이전
+            ← {dict.common.prev}
           </Link>
           <span className="font-semibold text-gray-800">{monthLabel}</span>
           <Link
             href={`/history?month=${nextMonth}`}
             className="rounded-lg px-2 py-1 text-gray-400 hover:bg-gray-100"
           >
-            다음 →
+            {dict.common.next} →
           </Link>
         </div>
       </div>
 
       <div className="rounded-2xl border border-gray-100 bg-white p-4 shadow-sm">
         <div className="grid grid-cols-7 gap-1 text-center text-xs text-gray-400">
-          {WEEKDAY_LABELS.map((label) => (
+          {dict.history.weekdayLabels.map((label) => (
             <div key={label} className="py-1">
               {label}
             </div>
@@ -117,9 +124,7 @@ export default async function HistoryPage({
         </div>
       </div>
 
-      <p className="text-center text-xs text-gray-400">
-        날짜를 클릭하면 해당 날짜의 기록을 조회하거나 수정할 수 있어요.
-      </p>
+      <p className="text-center text-xs text-gray-400">{dict.history.footerNote}</p>
     </div>
   );
 }

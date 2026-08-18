@@ -1,41 +1,47 @@
 import Link from "next/link";
 import { format } from "date-fns";
-import { ko } from "date-fns/locale";
+import { enUS, ko } from "date-fns/locale";
 import { CORE_ITEMS } from "@/lib/core-items";
 import type { DailyRecord } from "@/lib/types";
+import type { Locale } from "@/lib/i18n/locale";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
 import { filledCount } from "@/lib/stats";
 
 type PersonalWeekViewProps = {
   weekDates: string[];
   recordsByDate: Map<string, DailyRecord>;
+  locale: Locale;
+  dict: Dictionary;
 };
 
 export default function PersonalWeekView({
   weekDates,
   recordsByDate,
+  locale,
+  dict,
 }: PersonalWeekViewProps) {
+  const dateLocale = locale === "en" ? enUS : ko;
   const dayTotals = weekDates.map(
     (date) => filledCount(recordsByDate.get(date))
   );
   const activeDays = dayTotals.filter((n) => n > 0).length;
   const completeDays = dayTotals.filter((n) => n === CORE_ITEMS.length).length;
   const totalFilled = dayTotals.reduce((sum, n) => sum + n, 0);
+  const t = dict.dashboard.week;
 
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-3 gap-3">
-        <StatCard label="실천일" value={`${activeDays}일`} />
-        <StatCard label="완주일" value={`${completeDays}일`} />
-        <StatCard label="주간 작성 항목" value={`${totalFilled}개`} />
+        <StatCard label={t.activeDays} value={`${activeDays}`} />
+        <StatCard label={t.completeDays} value={`${completeDays}`} />
+        <StatCard label={t.totalItems} value={`${totalFilled}`} />
       </div>
 
       <div className="overflow-x-auto rounded-2xl border border-gray-100 bg-white p-4 shadow-sm">
         <table className="w-full min-w-[560px] border-separate border-spacing-1">
           <thead>
             <tr>
-              <th className="w-32 text-left text-xs font-medium text-gray-400">
-                항목
-              </th>
+              <th className="w-32 text-left text-xs font-medium text-gray-400" />
               {weekDates.map((date) => (
                 <th key={date} className="text-center">
                   <Link
@@ -44,7 +50,7 @@ export default function PersonalWeekView({
                   >
                     <p className="text-[10px] text-gray-400">
                       {format(new Date(`${date}T00:00:00`), "EEEEE", {
-                        locale: ko,
+                        locale: dateLocale,
                       })}
                     </p>
                     <p className="text-xs font-semibold text-gray-700">
@@ -59,7 +65,7 @@ export default function PersonalWeekView({
             {CORE_ITEMS.map((item) => (
               <tr key={item.key}>
                 <td className="text-xs font-medium text-gray-600">
-                  {item.emoji} {item.label}
+                  {item.emoji} {item.label[locale]}
                 </td>
                 {weekDates.map((date) => {
                   const record = recordsByDate.get(date);
@@ -82,7 +88,7 @@ export default function PersonalWeekView({
             ))}
             <tr>
               <td className="pt-2 text-xs font-semibold text-gray-500">
-                일별 합계
+                {t.dailyTotal}
               </td>
               {dayTotals.map((total, i) => (
                 <td key={weekDates[i]} className="pt-2 text-center">

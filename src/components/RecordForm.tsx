@@ -4,6 +4,8 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { format, addDays, subDays } from "date-fns";
 import { CORE_ITEMS, type CoreItemKey } from "@/lib/core-items";
+import type { Locale } from "@/lib/i18n/locale";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
 import ShareButton from "./ShareButton";
 
 type RecordFormProps = {
@@ -11,6 +13,8 @@ type RecordFormProps = {
   userName: string;
   initialValues: Record<CoreItemKey, string>;
   saveAction: (date: string, formData: FormData) => Promise<{ success: boolean }>;
+  locale: Locale;
+  dict: Dictionary;
 };
 
 export default function RecordForm({
@@ -18,6 +22,8 @@ export default function RecordForm({
   userName,
   initialValues,
   saveAction,
+  locale,
+  dict,
 }: RecordFormProps) {
   const router = useRouter();
   const [values, setValues] = useState(initialValues);
@@ -57,7 +63,7 @@ export default function RecordForm({
         </button>
         <div className="text-center">
           <p className="text-sm font-bold text-gray-900">{date}</p>
-          {isToday && <p className="text-xs text-orange-500">오늘</p>}
+          {isToday && <p className="text-xs text-orange-500">{dict.common.today}</p>}
         </div>
         <button
           type="button"
@@ -79,32 +85,38 @@ export default function RecordForm({
               className="flex items-center gap-2 text-sm font-semibold text-gray-800"
             >
               <span>{item.emoji}</span>
-              {item.label}
+              {item.label[locale]}
             </label>
-            <p className="mt-0.5 text-xs text-gray-400">{item.description}</p>
+            <p className="mt-0.5 text-xs text-gray-400">{item.description[locale]}</p>
             <textarea
               id={item.key}
               value={values[item.key] ?? ""}
               onChange={(e) => handleChange(item.key, e.target.value)}
               rows={2}
-              placeholder="오늘의 실천 내용을 입력하세요"
+              placeholder={dict.record.textareaPlaceholder}
               className="mt-2 w-full resize-none rounded-xl border border-gray-200 bg-gray-50 p-3 text-sm text-gray-800 outline-none focus:border-orange-300 focus:bg-white focus:ring-2 focus:ring-orange-100"
             />
           </div>
         ))}
 
         <div className="flex items-center justify-between gap-3 pt-2">
-          <ShareButton date={date} userName={userName} values={values} />
+          <ShareButton
+            date={date}
+            userName={userName}
+            values={values}
+            locale={locale}
+            dict={dict}
+          />
           <div className="flex items-center gap-3">
             {savedAt && !isPending && (
-              <span className="text-xs text-green-600">저장됨 ✓</span>
+              <span className="text-xs text-green-600">{dict.common.saved} ✓</span>
             )}
             <button
               type="submit"
               disabled={isPending}
               className="rounded-xl bg-orange-500 px-5 py-2.5 text-sm font-semibold text-white hover:bg-orange-600 disabled:opacity-60"
             >
-              {isPending ? "저장 중..." : "저장하기"}
+              {isPending ? dict.common.saving : dict.common.save}
             </button>
           </div>
         </div>

@@ -1,17 +1,20 @@
 import { CORE_ITEMS } from "@/lib/core-items";
 import type { DailyRecord, GroupMember } from "@/lib/types";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
 import { filledCount } from "@/lib/stats";
 
 type GroupMonthViewProps = {
   members: GroupMember[];
   monthDates: string[];
   recordsByUserDate: Map<string, DailyRecord>;
+  dict: Dictionary;
 };
 
 export default function GroupMonthView({
   members,
   monthDates,
   recordsByUserDate,
+  dict,
 }: GroupMonthViewProps) {
   const rows = members.map((member) => {
     const counts = monthDates.map((date) =>
@@ -32,15 +35,17 @@ export default function GroupMonthView({
 
   rows.sort((a, b) => b.avgProgress - a.avgProgress);
 
+  const t = dict.groups.detail;
+
   return (
     <div className="overflow-x-auto rounded-2xl border border-gray-100 bg-white p-4 shadow-sm">
       <table className="w-full min-w-[440px]">
         <thead>
           <tr className="border-b border-gray-100 text-left text-xs text-gray-400">
-            <th className="pb-2 font-medium">멤버</th>
-            <th className="pb-2 text-center font-medium">실천일</th>
-            <th className="pb-2 text-center font-medium">완주일</th>
-            <th className="pb-2 text-right font-medium">평균 진행률</th>
+            <th className="pb-2 font-medium">{t.memberColumn}</th>
+            <th className="pb-2 text-center font-medium">{t.activeDays}</th>
+            <th className="pb-2 text-center font-medium">{t.completeDays}</th>
+            <th className="pb-2 text-right font-medium">{t.avgProgress}</th>
           </tr>
         </thead>
         <tbody>
@@ -50,10 +55,10 @@ export default function GroupMonthView({
                 {member.display_name || member.email}
               </td>
               <td className="py-3 text-center text-sm text-gray-600">
-                {activeDays}일
+                {activeDays}
               </td>
               <td className="py-3 text-center text-sm text-gray-600">
-                {completeDays}일
+                {completeDays}
               </td>
               <td className="py-3">
                 <div className="flex items-center justify-end gap-2">

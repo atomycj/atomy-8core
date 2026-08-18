@@ -11,7 +11,8 @@ import {
   subMonths,
   subWeeks,
 } from "date-fns";
-import { ko } from "date-fns/locale";
+import { enUS, ko } from "date-fns/locale";
+import type { Locale as AppLocale } from "./i18n/locale";
 
 export type ViewMode = "day" | "week" | "month";
 
@@ -37,12 +38,21 @@ export type ViewNav = {
   rangeEnd: Date;
 };
 
-export function getViewNav(view: ViewMode, anchor: Date): ViewNav {
+export function getViewNav(
+  view: ViewMode,
+  anchor: Date,
+  appLocale: AppLocale = "ko"
+): ViewNav {
+  const dateLocale = appLocale === "en" ? enUS : ko;
+
   if (view === "day") {
     return {
       prev: format(subDays(anchor, 1), "yyyy-MM-dd"),
       next: format(addDays(anchor, 1), "yyyy-MM-dd"),
-      label: format(anchor, "yyyy년 M월 d일 (EEEEE)", { locale: ko }),
+      label:
+        appLocale === "en"
+          ? format(anchor, "PPP (EEE)", { locale: dateLocale })
+          : format(anchor, "yyyy년 M월 d일 (EEEEE)", { locale: dateLocale }),
       rangeStart: anchor,
       rangeEnd: anchor,
     };
@@ -51,10 +61,11 @@ export function getViewNav(view: ViewMode, anchor: Date): ViewNav {
   if (view === "week") {
     const start = startOfWeek(anchor);
     const end = endOfWeek(anchor);
+    const weekFormat = appLocale === "en" ? "MMM d" : "M월 d일";
     return {
       prev: format(subWeeks(anchor, 1), "yyyy-MM-dd"),
       next: format(addWeeks(anchor, 1), "yyyy-MM-dd"),
-      label: `${format(start, "M월 d일")} - ${format(end, "M월 d일")}`,
+      label: `${format(start, weekFormat, { locale: dateLocale })} - ${format(end, weekFormat, { locale: dateLocale })}`,
       rangeStart: start,
       rangeEnd: end,
     };
@@ -65,7 +76,10 @@ export function getViewNav(view: ViewMode, anchor: Date): ViewNav {
   return {
     prev: format(subMonths(anchor, 1), "yyyy-MM-dd"),
     next: format(addMonths(anchor, 1), "yyyy-MM-dd"),
-    label: format(anchor, "yyyy년 M월"),
+    label:
+      appLocale === "en"
+        ? format(anchor, "MMMM yyyy", { locale: dateLocale })
+        : format(anchor, "yyyy년 M월", { locale: dateLocale }),
     rangeStart: start,
     rangeEnd: end,
   };

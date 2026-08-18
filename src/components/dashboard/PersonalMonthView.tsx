@@ -2,20 +2,24 @@ import Link from "next/link";
 import { format, isSameMonth } from "date-fns";
 import { CORE_ITEMS } from "@/lib/core-items";
 import type { DailyRecord } from "@/lib/types";
+import type { Locale } from "@/lib/i18n/locale";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
 import { filledCount } from "@/lib/stats";
-
-const WEEKDAY_LABELS = ["일", "월", "화", "수", "목", "금", "토"];
 
 type PersonalMonthViewProps = {
   monthStart: Date;
   calendarDays: Date[];
   recordsByDate: Map<string, DailyRecord>;
+  locale: Locale;
+  dict: Dictionary;
 };
 
 export default function PersonalMonthView({
   monthStart,
   calendarDays,
   recordsByDate,
+  locale,
+  dict,
 }: PersonalMonthViewProps) {
   const monthRecords = calendarDays
     .filter((day) => isSameMonth(day, monthStart))
@@ -39,17 +43,20 @@ export default function PersonalMonthView({
     count: monthRecords.filter((r) => r?.[item.key]?.trim()).length,
   }));
 
+  const t = dict.dashboard.month;
+  const weekdayLabels = dict.history.weekdayLabels;
+
   return (
     <div className="space-y-5">
       <div className="grid grid-cols-3 gap-3">
-        <StatCard label="실천일" value={`${activeDays}일`} />
-        <StatCard label="완주일" value={`${completeDays}일`} />
-        <StatCard label="평균 진행률" value={`${avgProgress}%`} />
+        <StatCard label={t.activeDays} value={`${activeDays}`} />
+        <StatCard label={t.completeDays} value={`${completeDays}`} />
+        <StatCard label={t.avgProgress} value={`${avgProgress}%`} />
       </div>
 
       <div className="rounded-2xl border border-gray-100 bg-white p-4 shadow-sm">
         <div className="grid grid-cols-7 gap-1 text-center text-xs text-gray-400">
-          {WEEKDAY_LABELS.map((label) => (
+          {weekdayLabels.map((label) => (
             <div key={label} className="py-1">
               {label}
             </div>
@@ -94,9 +101,7 @@ export default function PersonalMonthView({
       </div>
 
       <div>
-        <h2 className="text-sm font-semibold text-gray-700">
-          항목별 실천 현황 (이번 달)
-        </h2>
+        <h2 className="text-sm font-semibold text-gray-700">{t.itemStatsTitle}</h2>
         <div className="mt-3 space-y-2">
           {itemStats.map((item) => (
             <div
@@ -104,7 +109,9 @@ export default function PersonalMonthView({
               className="flex items-center gap-3 rounded-xl border border-gray-100 bg-white p-3"
             >
               <span className="text-lg">{item.emoji}</span>
-              <span className="flex-1 text-sm text-gray-700">{item.label}</span>
+              <span className="flex-1 text-sm text-gray-700">
+                {item.label[locale]}
+              </span>
               <div className="h-1.5 w-24 overflow-hidden rounded-full bg-gray-100">
                 <div
                   className="h-full rounded-full bg-orange-400"
@@ -118,7 +125,7 @@ export default function PersonalMonthView({
                 />
               </div>
               <span className="w-10 text-right text-xs text-gray-400">
-                {item.count}일
+                {item.count}
               </span>
             </div>
           ))}
