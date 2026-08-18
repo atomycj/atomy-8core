@@ -62,6 +62,12 @@ export default function Navbar({
           >
             {dict.nav.groups}
           </Link>
+          <Link
+            href="/guide"
+            className="rounded-lg px-3 py-1.5 hover:bg-gray-100 hover:text-gray-900"
+          >
+            {dict.nav.guide}
+          </Link>
           {isAdmin && (
             <Link
               href="/admin"

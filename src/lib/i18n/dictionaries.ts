@@ -7,6 +7,7 @@ export interface Dictionary {
     today: string;
     history: string;
     groups: string;
+    guide: string;
     admin: string;
     signOut: string;
   };
@@ -117,6 +118,7 @@ const dictionaries: Record<Locale, Dictionary> = {
       today: "오늘 기록",
       history: "히스토리",
       groups: "그룹",
+      guide: "가이드",
       admin: "관리자",
       signOut: "로그아웃",
     },
@@ -226,6 +228,7 @@ const dictionaries: Record<Locale, Dictionary> = {
       today: "Today",
       history: "History",
       groups: "Groups",
+      guide: "Guide",
       admin: "Admin",
       signOut: "Sign out",
     },
