@@ -25,8 +25,8 @@ export const CORE_ITEMS: CoreItemDef[] = [
     emoji: "📖",
     label: { ko: "책읽기", en: "Reading" },
     description: {
-      ko: "매일 15분 이상 책읽기 (책 선택하는데 도움이 필요하시면 공지에 추천도서 목록이 있습니다)",
-      en: "Read for at least 15 minutes every day (check the notice board for a recommended reading list if you need help choosing a book)",
+      ko: "매일 15분 이상 책읽기 (책 선택하는데 도움이 필요하시면 스폰서에게 문의하세요)",
+      en: "Read for at least 15 minutes every day (contact your sponsor if you need help choosing a book)",
     },
   },
   {
