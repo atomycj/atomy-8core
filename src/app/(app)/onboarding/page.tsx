@@ -136,26 +136,50 @@ export default async function OnboardingPage() {
         ))}
       </div>
 
-      <form action={completeOnboardingAction} className="flex justify-center">
-        <button
-          type="submit"
-          className="rounded-xl bg-brand-500 px-8 py-3 text-sm font-semibold text-white hover:bg-brand-600"
-        >
-          {locale === "en" ? "Get Started" : "시작하기"}
-        </button>
-      </form>
+      <div className="space-y-4 rounded-2xl border border-brand-100 bg-brand-50 p-6 text-center">
+        <p className="text-sm font-medium text-brand-800">
+          {locale === "en" ? (
+            <>
+              Clicking below means next time you log in, you&apos;ll go
+              straight to the dashboard instead of this page.
+            </>
+          ) : (
+            <>
+              아래 버튼을 누르면, 다음부터 로그인할 때 이 페이지 대신{" "}
+              <span className="font-semibold">바로 대시보드로</span>{" "}
+              이동해요.
+            </>
+          )}
+        </p>
+        <p className="text-sm text-brand-700">
+          {locale === "en" ? (
+            <>
+              You can always come back to this guide from the{" "}
+              <Link href="/onboarding" className="font-semibold underline underline-offset-2">
+                {dict.nav.help}
+              </Link>{" "}
+              menu above.
+            </>
+          ) : (
+            <>
+              이 안내는 위쪽 메뉴의{" "}
+              <Link href="/onboarding" className="font-semibold underline underline-offset-2">
+                {dict.nav.help}
+              </Link>
+              에서 언제든 다시 볼 수 있어요.
+            </>
+          )}
+        </p>
 
-      <p className="text-center text-xs text-gray-400">
-        {locale === "en" ? (
-          <>You can revisit this page anytime from the </>
-        ) : (
-          <>이 페이지는 헤더의 </>
-        )}
-        <Link href="/onboarding" className="font-medium text-brand-600 hover:underline">
-          {dict.nav.help}
-        </Link>
-        {locale === "en" ? <> link in the header.</> : <> 메뉴에서 언제든 다시 볼 수 있어요.</>}
-      </p>
+        <form action={completeOnboardingAction} className="flex justify-center pt-2">
+          <button
+            type="submit"
+            className="rounded-xl bg-brand-500 px-8 py-3 text-sm font-semibold text-white hover:bg-brand-600"
+          >
+            {locale === "en" ? "Got it, take me to the dashboard" : "확인했어요, 대시보드로 이동"}
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
