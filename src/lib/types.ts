@@ -19,3 +19,26 @@ export type DailyRecord = {
 export type DailyRecordInput = Partial<Record<CoreItemKey, string>> & {
   record_date: string;
 };
+
+export type Profile = {
+  id: string;
+  email: string;
+  display_name: string | null;
+  can_create_groups: boolean;
+  created_at: string;
+};
+
+export type GroupSummary = {
+  id: string;
+  name: string;
+  created_at: string;
+  member_count: number;
+  is_owner: boolean;
+};
+
+export type GroupMember = {
+  user_id: string;
+  email: string;
+  display_name: string | null;
+  joined_at: string;
+};

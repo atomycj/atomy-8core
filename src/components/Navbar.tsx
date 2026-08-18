@@ -4,9 +4,10 @@ import { format } from "date-fns";
 type NavbarProps = {
   userName: string;
   userAvatar?: string | null;
+  isAdmin?: boolean;
 };
 
-export default function Navbar({ userName, userAvatar }: NavbarProps) {
+export default function Navbar({ userName, userAvatar, isAdmin }: NavbarProps) {
   const today = format(new Date(), "yyyy-MM-dd");
 
   return (
@@ -38,6 +39,20 @@ export default function Navbar({ userName, userAvatar }: NavbarProps) {
           >
             히스토리
           </Link>
+          <Link
+            href="/groups"
+            className="rounded-lg px-3 py-1.5 hover:bg-gray-100 hover:text-gray-900"
+          >
+            그룹
+          </Link>
+          {isAdmin && (
+            <Link
+              href="/admin"
+              className="rounded-lg px-3 py-1.5 hover:bg-gray-100 hover:text-gray-900"
+            >
+              관리자
+            </Link>
+          )}
         </nav>
 
         <div className="flex items-center gap-3">
