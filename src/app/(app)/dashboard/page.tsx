@@ -5,6 +5,7 @@ import { computeCurrentStreak } from "@/lib/stats";
 import { getViewNav, parseAnchorDate, parseView } from "@/lib/view-nav";
 import { getLocale } from "@/lib/i18n/locale";
 import { getDictionary } from "@/lib/i18n/dictionaries";
+import { formatStreak } from "@/lib/i18n/format";
 import ViewTabs from "@/components/ViewTabs";
 import ViewNavHeader from "@/components/ViewNavHeader";
 import PersonalDayView from "@/components/dashboard/PersonalDayView";
@@ -61,7 +62,7 @@ export default async function DashboardPage({
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="text-lg font-bold text-gray-900">{dict.dashboard.title}</h1>
-          <p className="mt-1 text-sm text-gray-500">{dict.dashboard.streak(streak)}</p>
+          <p className="mt-1 text-sm text-gray-500">{formatStreak(locale, streak)}</p>
         </div>
         <ViewTabs
           basePath="/dashboard"

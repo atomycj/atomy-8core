@@ -4,6 +4,8 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import type { GroupOption } from "@/lib/types";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
+import type { Locale } from "@/lib/i18n/locale";
+import { formatMemberSuffix } from "@/lib/i18n/format";
 
 type GroupActionResult =
   | { success: true; group: { id: string; name: string } }
@@ -15,6 +17,7 @@ type GroupFormsProps = {
   createAction: (formData: FormData) => Promise<GroupActionResult>;
   joinAction: (formData: FormData) => Promise<GroupActionResult>;
   dict: Dictionary["groups"]["forms"];
+  locale: Locale;
 };
 
 export default function GroupForms({
@@ -23,6 +26,7 @@ export default function GroupForms({
   createAction,
   joinAction,
   dict,
+  locale,
 }: GroupFormsProps) {
   const router = useRouter();
   const [tab, setTab] = useState<"join" | "create">("join");
@@ -94,7 +98,7 @@ export default function GroupForms({
               </option>
               {joinableGroups.map((group) => (
                 <option key={group.id} value={group.name}>
-                  {group.name} ({dict.memberSuffix(group.member_count)})
+                  {group.name} ({formatMemberSuffix(locale, group.member_count)})
                 </option>
               ))}
             </select>

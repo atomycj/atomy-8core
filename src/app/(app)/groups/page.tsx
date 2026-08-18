@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import type { GroupOption, GroupSummary } from "@/lib/types";
 import { getLocale } from "@/lib/i18n/locale";
 import { getDictionary } from "@/lib/i18n/dictionaries";
+import { formatGroupMemberCount } from "@/lib/i18n/format";
 import GroupForms from "@/components/GroupForms";
 import { createGroupAction, joinGroupAction } from "./actions";
 
@@ -42,6 +43,7 @@ export default async function GroupsPage() {
         createAction={createGroupAction}
         joinAction={joinGroupAction}
         dict={dict.groups.forms}
+        locale={locale}
       />
 
       <section>
@@ -65,7 +67,8 @@ export default async function GroupsPage() {
                   )}
                 </p>
                 <p className="mt-0.5 text-xs text-gray-400">
-                  {dict.groups.memberCountLabel(
+                  {formatGroupMemberCount(
+                    locale,
                     group.member_count,
                     format(new Date(group.created_at), "yyyy-MM-dd")
                   )}

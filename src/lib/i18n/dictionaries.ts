@@ -26,7 +26,6 @@ export interface Dictionary {
   };
   dashboard: {
     title: string;
-    streak: (n: number) => string;
     viewTabs: { day: string; week: string; month: string };
     day: {
       progressLabel: string;
@@ -56,14 +55,12 @@ export interface Dictionary {
     subtitle: string;
     myGroupsTitle: string;
     ownerBadge: string;
-    memberCountLabel: (n: number, date: string) => string;
     emptyGroups: string;
     forms: {
       joinTab: string;
       createTab: string;
       joinHelp: string;
       selectPlaceholder: string;
-      memberSuffix: (n: number) => string;
       noGroups: string;
       passwordPlaceholder: string;
       joinSubmit: string;
@@ -76,7 +73,6 @@ export interface Dictionary {
     };
     detail: {
       backLink: string;
-      memberCount: (n: number) => string;
       me: string;
       noRecord: string;
       memberColumn: string;
@@ -111,10 +107,6 @@ export interface Dictionary {
     copied: string;
     textareaPlaceholder: string;
   };
-  share: {
-    reportTitle: (date: string) => string;
-    achievedLabel: (filled: number, total: number) => string;
-  };
 }
 
 const dictionaries: Record<Locale, Dictionary> = {
@@ -144,7 +136,6 @@ const dictionaries: Record<Locale, Dictionary> = {
     },
     dashboard: {
       title: "내 대시보드",
-      streak: (n: number) => `연속 기록 ${n}일째`,
       viewTabs: { day: "일간", week: "주간", month: "월간" },
       day: {
         progressLabel: "이 날의 진행률",
@@ -174,14 +165,12 @@ const dictionaries: Record<Locale, Dictionary> = {
       subtitle: "그룹에 참여하면 팀원들의 8코어 기록을 함께 볼 수 있어요.",
       myGroupsTitle: "내 그룹",
       ownerBadge: "개설자",
-      memberCountLabel: (n: number, date: string) => `멤버 ${n}명 · ${date} 개설`,
       emptyGroups: "아직 참여한 그룹이 없어요. 위에서 그룹에 참여하거나 만들어보세요.",
       forms: {
         joinTab: "그룹 참여",
         createTab: "그룹 만들기",
         joinHelp: "그룹을 선택하고 비밀번호를 입력해서 참여하세요.",
         selectPlaceholder: "그룹 선택",
-        memberSuffix: (n: number) => `${n}명`,
         noGroups: "아직 생성된 그룹이 없어요.",
         passwordPlaceholder: "그룹 비밀번호",
         joinSubmit: "참여하기",
@@ -194,7 +183,6 @@ const dictionaries: Record<Locale, Dictionary> = {
       },
       detail: {
         backLink: "← 그룹 목록",
-        memberCount: (n: number) => `멤버 ${n}명`,
         me: "나",
         noRecord: "이 날짜에 작성된 기록이 없어요.",
         memberColumn: "멤버",
@@ -230,10 +218,6 @@ const dictionaries: Record<Locale, Dictionary> = {
       copied: "복사됨! ✓",
       textareaPlaceholder: "오늘의 실천 내용을 입력하세요",
     },
-    share: {
-      reportTitle: (date: string) => `📋 ${date} 8코어 실천 리포트`,
-      achievedLabel: (filled: number, total: number) => `✅ 달성 ${filled} / ${total}`,
-    },
   },
   en: {
     appName: "Atomy 8 Core",
@@ -261,7 +245,6 @@ const dictionaries: Record<Locale, Dictionary> = {
     },
     dashboard: {
       title: "My Dashboard",
-      streak: (n: number) => `${n}-day streak`,
       viewTabs: { day: "Day", week: "Week", month: "Month" },
       day: {
         progressLabel: "Progress for this day",
@@ -291,14 +274,12 @@ const dictionaries: Record<Locale, Dictionary> = {
       subtitle: "Join a group to see your teammates' 8 Core records.",
       myGroupsTitle: "My Groups",
       ownerBadge: "Owner",
-      memberCountLabel: (n: number, date: string) => `${n} members · created ${date}`,
       emptyGroups: "You haven't joined any groups yet. Join or create one above.",
       forms: {
         joinTab: "Join group",
         createTab: "Create group",
         joinHelp: "Pick a group and enter its password to join.",
         selectPlaceholder: "Select a group",
-        memberSuffix: (n: number) => `${n} members`,
         noGroups: "No groups have been created yet.",
         passwordPlaceholder: "Group password",
         joinSubmit: "Join",
@@ -311,7 +292,6 @@ const dictionaries: Record<Locale, Dictionary> = {
       },
       detail: {
         backLink: "← Group list",
-        memberCount: (n: number) => `${n} members`,
         me: "Me",
         noRecord: "No record for this date.",
         memberColumn: "Member",
@@ -346,10 +326,6 @@ const dictionaries: Record<Locale, Dictionary> = {
       shareButton: "Share with team",
       copied: "Copied! ✓",
       textareaPlaceholder: "Write what you did today",
-    },
-    share: {
-      reportTitle: (date: string) => `📋 ${date} 8 Core Report`,
-      achievedLabel: (filled: number, total: number) => `✅ Achieved ${filled} / ${total}`,
     },
   },
 };

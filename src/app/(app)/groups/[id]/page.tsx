@@ -6,6 +6,7 @@ import type { DailyRecord, GroupMember, GroupSummary } from "@/lib/types";
 import { getViewNav, parseAnchorDate, parseView } from "@/lib/view-nav";
 import { getLocale } from "@/lib/i18n/locale";
 import { getDictionary } from "@/lib/i18n/dictionaries";
+import { formatGroupDetailMemberCount } from "@/lib/i18n/format";
 import ViewTabs from "@/components/ViewTabs";
 import ViewNavHeader from "@/components/ViewNavHeader";
 import GroupMemberCard from "@/components/GroupMemberCard";
@@ -71,7 +72,7 @@ export default async function GroupDetailPage({
           <div>
             <h1 className="text-lg font-bold text-gray-900">{group.name}</h1>
             <p className="mt-1 text-sm text-gray-500">
-              {dict.groups.detail.memberCount(group.member_count)}
+              {formatGroupDetailMemberCount(locale, group.member_count)}
             </p>
           </div>
           <ViewTabs

@@ -5,6 +5,7 @@ import { CORE_ITEMS } from "@/lib/core-items";
 import type { CoreItemKey } from "@/lib/core-items";
 import type { Locale } from "@/lib/i18n/locale";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
+import { formatAchievedLabel, formatShareReportTitle } from "@/lib/i18n/format";
 
 type ShareButtonProps = {
   date: string;
@@ -21,7 +22,7 @@ function buildShareText(
   locale: Locale,
   dict: Dictionary
 ) {
-  const lines = [dict.share.reportTitle(date), `👤 ${userName}`, ""];
+  const lines = [formatShareReportTitle(locale, date), `👤 ${userName}`, ""];
 
   for (const item of CORE_ITEMS) {
     const value = values[item.key]?.trim();
@@ -31,7 +32,7 @@ function buildShareText(
   }
 
   const filled = CORE_ITEMS.filter((item) => values[item.key]?.trim()).length;
-  lines.push(dict.share.achievedLabel(filled, CORE_ITEMS.length));
+  lines.push(formatAchievedLabel(locale, filled, CORE_ITEMS.length));
 
   return lines.join("\n").trim();
 }
