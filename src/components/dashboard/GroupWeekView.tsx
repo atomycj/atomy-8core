@@ -68,9 +68,9 @@ export default function GroupWeekView({
                     <span
                       className={`mx-auto flex h-6 w-8 items-center justify-center rounded-md text-[11px] font-semibold ${
                         count === CORE_ITEMS.length
-                          ? "bg-orange-500 text-white"
+                          ? "bg-brand-500 text-white"
                           : count > 0
-                            ? "bg-orange-100 text-orange-600"
+                            ? "bg-brand-100 text-brand-600"
                             : "bg-gray-100 text-gray-400"
                       }`}
                     >

@@ -37,7 +37,7 @@ export default function AdminUserRow({ profile, onToggle, dict }: AdminUserRowPr
       </td>
       <td className="py-3 text-right">
         {isAdmin ? (
-          <span className="rounded-full bg-orange-100 px-3 py-1 text-xs font-semibold text-orange-600">
+          <span className="rounded-full bg-brand-100 px-3 py-1 text-xs font-semibold text-brand-600">
             {dict.adminBadge}
           </span>
         ) : (
@@ -47,7 +47,7 @@ export default function AdminUserRow({ profile, onToggle, dict }: AdminUserRowPr
               checked={checked}
               disabled={isPending}
               onChange={(e) => handleChange(e.target.checked)}
-              className="h-4 w-4 rounded border-gray-300 text-orange-500 focus:ring-orange-400"
+              className="h-4 w-4 rounded border-gray-300 text-brand-500 focus:ring-brand-400"
             />
             {dict.permissionLabel}
           </label>

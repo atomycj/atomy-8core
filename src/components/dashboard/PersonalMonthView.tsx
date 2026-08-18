@@ -76,9 +76,9 @@ export default function PersonalMonthView({
                 href={`/dashboard?view=day&date=${dateKey}`}
                 className={`flex aspect-square flex-col items-center justify-center rounded-xl border text-xs transition ${
                   inMonth
-                    ? "border-gray-100 bg-white hover:border-orange-200"
+                    ? "border-gray-100 bg-white hover:border-brand-200"
                     : "border-transparent bg-gray-50 text-gray-300"
-                } ${isToday ? "ring-2 ring-orange-300" : ""}`}
+                } ${isToday ? "ring-2 ring-brand-300" : ""}`}
               >
                 <span className={inMonth ? "text-gray-700" : "text-gray-300"}>
                   {format(day, "d")}
@@ -87,8 +87,8 @@ export default function PersonalMonthView({
                   <span
                     className={`mt-1 flex h-4 w-8 items-center justify-center rounded-full text-[10px] font-semibold ${
                       count === CORE_ITEMS.length
-                        ? "bg-orange-500 text-white"
-                        : "bg-orange-100 text-orange-600"
+                        ? "bg-brand-500 text-white"
+                        : "bg-brand-100 text-brand-600"
                     }`}
                   >
                     {count}/{CORE_ITEMS.length}
@@ -114,7 +114,7 @@ export default function PersonalMonthView({
               </span>
               <div className="h-1.5 w-24 overflow-hidden rounded-full bg-gray-100">
                 <div
-                  className="h-full rounded-full bg-orange-400"
+                  className="h-full rounded-full bg-brand-400"
                   style={{
                     width: `${
                       monthRecords.length > 0

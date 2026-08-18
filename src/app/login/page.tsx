@@ -9,8 +9,8 @@ export default async function LoginPage() {
   const dict = getDictionary(locale);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-orange-50 to-white px-4">
-      <div className="w-full max-w-sm rounded-2xl border border-orange-100 bg-white p-8 text-center shadow-sm">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-brand-50 to-white px-4">
+      <div className="w-full max-w-sm rounded-2xl border border-brand-100 bg-white p-8 text-center shadow-sm">
         <div className="mb-4 flex justify-center">
           <LanguageToggle locale={locale} />
         </div>

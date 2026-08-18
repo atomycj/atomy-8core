@@ -14,7 +14,7 @@ create table if not exists public.daily_records (
   delivery text default '',
   meeting text default '',
   trust text default '',
-  health text default '',
+  sponsor_consultation text default '',
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   unique (user_id, record_date)

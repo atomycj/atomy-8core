@@ -13,7 +13,7 @@ export default function LanguageToggle({ locale }: LanguageToggleProps) {
           type="submit"
           className={`rounded-md px-2 py-1 ${
             locale === "ko"
-              ? "bg-orange-500 text-white"
+              ? "bg-brand-500 text-white"
               : "text-gray-400 hover:bg-gray-100"
           }`}
         >
@@ -25,7 +25,7 @@ export default function LanguageToggle({ locale }: LanguageToggleProps) {
           type="submit"
           className={`rounded-md px-2 py-1 ${
             locale === "en"
-              ? "bg-orange-500 text-white"
+              ? "bg-brand-500 text-white"
               : "text-gray-400 hover:bg-gray-100"
           }`}
         >

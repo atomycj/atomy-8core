@@ -63,7 +63,7 @@ export default function RecordForm({
         </button>
         <div className="text-center">
           <p className="text-sm font-bold text-gray-900">{date}</p>
-          {isToday && <p className="text-xs text-orange-500">{dict.common.today}</p>}
+          {isToday && <p className="text-xs text-brand-500">{dict.common.today}</p>}
         </div>
         <button
           type="button"
@@ -94,7 +94,7 @@ export default function RecordForm({
               onChange={(e) => handleChange(item.key, e.target.value)}
               rows={2}
               placeholder={dict.record.textareaPlaceholder}
-              className="mt-2 w-full resize-none rounded-xl border border-gray-200 bg-gray-50 p-3 text-sm text-gray-800 outline-none focus:border-orange-300 focus:bg-white focus:ring-2 focus:ring-orange-100"
+              className="mt-2 w-full resize-none rounded-xl border border-gray-200 bg-gray-50 p-3 text-sm text-gray-800 outline-none focus:border-brand-300 focus:bg-white focus:ring-2 focus:ring-brand-100"
             />
           </div>
         ))}
@@ -114,7 +114,7 @@ export default function RecordForm({
             <button
               type="submit"
               disabled={isPending}
-              className="rounded-xl bg-orange-500 px-5 py-2.5 text-sm font-semibold text-white hover:bg-orange-600 disabled:opacity-60"
+              className="rounded-xl bg-brand-500 px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-600 disabled:opacity-60"
             >
               {isPending ? dict.common.saving : dict.common.save}
             </button>

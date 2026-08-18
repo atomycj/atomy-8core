@@ -22,7 +22,7 @@ export default function PersonalDayView({
 
   return (
     <div className="space-y-4">
-      <div className="rounded-2xl border border-orange-100 bg-white p-5 shadow-sm">
+      <div className="rounded-2xl border border-brand-100 bg-white p-5 shadow-sm">
         <div className="flex items-center justify-between">
           <div>
             <p className="text-sm text-gray-500">{dict.dashboard.day.progressLabel}</p>
@@ -32,14 +32,14 @@ export default function PersonalDayView({
           </div>
           <Link
             href={`/record/${date}`}
-            className="rounded-xl bg-orange-500 px-4 py-2 text-sm font-semibold text-white hover:bg-orange-600"
+            className="rounded-xl bg-brand-500 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-600"
           >
             {record ? dict.dashboard.day.editButton : dict.dashboard.day.createButton}
           </Link>
         </div>
         <div className="mt-4 h-2 w-full overflow-hidden rounded-full bg-gray-100">
           <div
-            className="h-full rounded-full bg-orange-500 transition-all"
+            className="h-full rounded-full bg-brand-500 transition-all"
             style={{ width: `${(count / CORE_ITEMS.length) * 100}%` }}
           />
         </div>

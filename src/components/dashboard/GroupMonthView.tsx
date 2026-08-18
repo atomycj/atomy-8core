@@ -64,7 +64,7 @@ export default function GroupMonthView({
                 <div className="flex items-center justify-end gap-2">
                   <div className="h-1.5 w-20 overflow-hidden rounded-full bg-gray-100">
                     <div
-                      className="h-full rounded-full bg-orange-400"
+                      className="h-full rounded-full bg-brand-400"
                       style={{ width: `${avgProgress}%` }}
                     />
                   </div>

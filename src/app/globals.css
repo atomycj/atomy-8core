@@ -10,6 +10,16 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* Atomy logo blue */
+  --color-brand-50: #ebfaff;
+  --color-brand-100: #d1f3ff;
+  --color-brand-200: #a3e7ff;
+  --color-brand-300: #66d6ff;
+  --color-brand-400: #33c9ff;
+  --color-brand-500: #00b4f5;
+  --color-brand-600: #0096cc;
+  --color-brand-700: #007ca8;
 }
 
 @media (prefers-color-scheme: dark) {

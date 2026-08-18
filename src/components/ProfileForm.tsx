@@ -114,14 +114,14 @@ export default function ProfileForm({
           onChange={(e) => setName(e.target.value)}
           required
           placeholder={dict.profile.namePlaceholder}
-          className="mt-1 w-full rounded-xl border border-gray-200 bg-gray-50 p-3 text-sm outline-none focus:border-orange-300 focus:bg-white focus:ring-2 focus:ring-orange-100"
+          className="mt-1 w-full rounded-xl border border-gray-200 bg-gray-50 p-3 text-sm outline-none focus:border-brand-300 focus:bg-white focus:ring-2 focus:ring-brand-100"
         />
       </div>
 
       <button
         type="submit"
         disabled={isPending}
-        className="w-full rounded-xl bg-orange-500 px-4 py-2.5 text-sm font-semibold text-white hover:bg-orange-600 disabled:opacity-60"
+        className="w-full rounded-xl bg-brand-500 px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-600 disabled:opacity-60"
       >
         {isPending ? dict.common.saving : dict.common.save}
       </button>

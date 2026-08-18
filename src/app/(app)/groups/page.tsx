@@ -53,13 +53,13 @@ export default async function GroupsPage() {
             <Link
               key={group.id}
               href={`/groups/${group.id}`}
-              className="flex items-center justify-between rounded-xl border border-gray-100 bg-white p-4 shadow-sm hover:border-orange-200"
+              className="flex items-center justify-between rounded-xl border border-gray-100 bg-white p-4 shadow-sm hover:border-brand-200"
             >
               <div>
                 <p className="text-sm font-semibold text-gray-800">
                   {group.name}
                   {group.is_owner && (
-                    <span className="ml-2 rounded-full bg-orange-100 px-2 py-0.5 text-[10px] font-semibold text-orange-600">
+                    <span className="ml-2 rounded-full bg-brand-100 px-2 py-0.5 text-[10px] font-semibold text-brand-600">
                       {dict.groups.ownerBadge}
                     </span>
                   )}

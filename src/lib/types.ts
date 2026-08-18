@@ -11,7 +11,7 @@ export type DailyRecord = {
   delivery: string | null;
   meeting: string | null;
   trust: string | null;
-  health: string | null;
+  sponsor_consultation: string | null;
   created_at: string;
   updated_at: string;
 };
