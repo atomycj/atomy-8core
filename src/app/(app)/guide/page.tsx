@@ -1,9 +1,17 @@
 import Link from "next/link";
+import { getLocale } from "@/lib/i18n/locale";
 
-const VIDEO_URL = "http://www.youtube.com/watch?v=I3RGK0jnwMo";
+const KO_VIDEO_URL = "http://www.youtube.com/watch?v=I3RGK0jnwMo";
+const EN_VIDEO_URL = "http://www.youtube.com/watch?v=ejpJguAT1kg";
 
-function ytLink(seconds: number) {
-  return `${VIDEO_URL}&t=${seconds}`;
+function ytLink(videoUrl: string, seconds: number) {
+  return `${videoUrl}&t=${seconds}`;
+}
+
+function formatTimestamp(seconds: number) {
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  return `${m}:${String(s).padStart(2, "0")}`;
 }
 
 const CORE_GUIDE_ITEMS = [
@@ -61,8 +69,7 @@ const CORE_GUIDE_ITEMS = [
 const LEADERSHIP_POINTS = [
   {
     title: "행동 관리의 데이터화",
-    quote:
-      "측정할 수 없으면 관리할 수 없고, 관리할 수 없으면 개선할 수 없다",
+    quote: "측정할 수 없으면 관리할 수 없고, 관리할 수 없으면 개선할 수 없다",
     quoteBy: "피터 드러커",
     description:
       "이 원칙 아래 파트너의 8CORE 체크리스트 작성을 주기적으로 점검 및 지도해야 합니다.",
@@ -82,13 +89,202 @@ const LEADERSHIP_POINTS = [
   },
 ];
 
-function formatTimestamp(seconds: number) {
-  const m = Math.floor(seconds / 60);
-  const s = seconds % 60;
-  return `${m}:${String(s).padStart(2, "0")}`;
-}
+const EN_HABITS = [
+  {
+    emoji: "📖",
+    title: "Habit 1: Read Books",
+    timeRange: "6:36 – 12:36",
+    bullets: [
+      {
+        text: "Success starts with replicating the expert's manual (the 8 Steps to Success & 8CORE) into a daily habit.",
+        timestamps: [396, 442],
+      },
+      {
+        text: "Investing 1% of your day (about 15 minutes) in steady reading gives decisive help with mind control, improving relationships, and setting goals.",
+        timestamps: [480, 635],
+      },
+    ],
+  },
+  {
+    emoji: "🎬",
+    title: "Habit 2: Watch VODs & the 10,000-Hour Rule",
+    timeRange: "12:44 – 16:25",
+    bullets: [
+      {
+        text: "Watching at least one VOD every day steadies a wavering mind and recharges your passion.",
+        timestamps: [791],
+      },
+      {
+        text: "Decided to put in 15 hours a day, for a total of 10,000 hours of immersion, to reach an annual income in the hundreds of millions within the first two years.",
+        timestamps: [865, 880],
+      },
+      {
+        text: "Took the lead everywhere regardless of place - pushing a 12-month-old baby in a stroller to early-morning bathhouses, street stalls, and more.",
+        timestamps: [904, 949],
+      },
+    ],
+  },
+  {
+    emoji: "🤝",
+    title: "Habit 3: Attend Meetings",
+    timeRange: "16:41 – 19:36",
+    bullets: [
+      {
+        text: "Making online and offline meeting attendance a habit keeps the business going and keeps you supplied with energy.",
+        timestamps: [1035],
+      },
+      {
+        text: "Adapting quickly to the changed, \"ontact\" environment by actively using systems like One Day Seminar and Success Academy.",
+        timestamps: [1080, 1134],
+      },
+    ],
+  },
+  {
+    emoji: "🛍️",
+    title: "Habit 4: 100% Product Use (Loyal Consumer)",
+    timeRange: "19:36 – 21:46",
+    bullets: [
+      {
+        text: "The only real prerequisite for a distributor is becoming an Atomy \"loyal consumer.\"",
+        timestamps: [1193],
+      },
+      {
+        text: "You have to experience the products yourself and feel moved by them before you can deliver them authentically - that's what creates a steady stream of auto-consumers.",
+        timestamps: [1231, 1270],
+      },
+    ],
+  },
+  {
+    emoji: "💼",
+    title: "Habit 5: Show the Plan (STP)",
+    timeRange: "21:46 – 24:55",
+    bullets: [
+      {
+        text: "Not an intimidating, full-blown lecture - just the habit of sharing Atomy's vision and your own experience with at least one person a day (at minimum, one person every two days), even if it only takes a minute.",
+        timestamps: [1329, 1381],
+      },
+      {
+        text: "The \"Law of Just Moving On\": not getting discouraged by rejection - getting rejection out of the way quickly is the shortcut to a successful conversation.",
+        timestamps: [1401, 1427],
+      },
+    ],
+  },
+  {
+    emoji: "📦",
+    title: "Habit 6: Share with Consumers",
+    timeRange: "24:55 – 28:00",
+    bullets: [
+      {
+        text: "Actively growing the consumer base online and offline - flyers, SNS with auto-translate, interest-based group chats, and more.",
+        timestamps: [1533, 1603, 1633],
+      },
+      {
+        text: "A routine of steadily caring for auto-consumers, guiding them through a 1:1 learning process that naturally turns them into distributors.",
+        timestamps: [1658, 1664],
+      },
+    ],
+  },
+  {
+    emoji: "☎️",
+    title: "Habit 7: Sponsor Consultation",
+    timeRange: "28:00 – 30:06",
+    bullets: [
+      {
+        text: "Consultation is how you grow close with your sponsor and mentor - ongoing communication builds your sense of direction and keeps you motivated.",
+        timestamps: [1700, 1762],
+      },
+    ],
+  },
+  {
+    emoji: "🫱",
+    title: "Habit 8: Build Trust & Achieve System Income",
+    timeRange: "30:06 – 34:26",
+    bullets: [
+      {
+        text: "The key to speeding up your success is building trust with consumers and partners.",
+        timestamps: [1860, 1883],
+      },
+      {
+        text: "The SGTP principle (Smile, Greet, Talk with, Praise) builds rapport and grows relationships.",
+        timestamps: [1899],
+      },
+      {
+        text: "Practicing the 8CORE manual (using the life-scenario booklet) builds a powerful \"3RICH system income\" that keeps earning even while you sleep.",
+        timestamps: [1978, 2013],
+      },
+    ],
+  },
+];
 
-export default function GuidePage() {
+export default async function GuidePage() {
+  const locale = await getLocale();
+
+  if (locale === "en") {
+    return (
+      <div className="space-y-8">
+        <div>
+          <Link href="/dashboard" className="text-xs text-gray-400 hover:text-gray-600">
+            ← Dashboard
+          </Link>
+          <h1 className="mt-1 text-lg font-bold text-gray-900">
+            8 Core Success Habits Guide
+          </h1>
+          <p className="mt-1 text-sm text-gray-500">
+            The 8 daily habits that build a duplicable success system.{" "}
+            <a
+              href={EN_VIDEO_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-brand-600 underline underline-offset-2 hover:text-brand-700"
+            >
+              Watch the original video ↗
+            </a>
+          </p>
+        </div>
+
+        <div className="space-y-4">
+          {EN_HABITS.map((habit) => (
+            <div
+              key={habit.title}
+              className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm"
+            >
+              <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+                <p className="flex items-center gap-2 text-sm font-semibold text-gray-800">
+                  <span>{habit.emoji}</span>
+                  {habit.title}
+                </p>
+                <span className="text-xs text-gray-400">{habit.timeRange}</span>
+              </div>
+              <ul className="mt-3 space-y-2">
+                {habit.bullets.map((bullet, i) => (
+                  <li key={i} className="flex gap-2 text-sm leading-relaxed text-gray-600">
+                    <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-gray-300" />
+                    <span>
+                      {bullet.text}{" "}
+                      <span className="inline-flex gap-1.5 align-middle">
+                        {bullet.timestamps.map((t) => (
+                          <a
+                            key={t}
+                            href={ytLink(EN_VIDEO_URL, t)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-xs text-gray-400 hover:text-brand-600"
+                          >
+                            {formatTimestamp(t)} ↗
+                          </a>
+                        ))}
+                      </span>
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-10">
       <div>
@@ -101,7 +297,7 @@ export default function GuidePage() {
         <p className="mt-1 text-sm text-gray-500">
           핵심 실천 행동과 리더십 가이드를 한눈에 확인하세요.{" "}
           <a
-            href={VIDEO_URL}
+            href={KO_VIDEO_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="font-medium text-brand-600 underline underline-offset-2 hover:text-brand-700"
@@ -117,7 +313,7 @@ export default function GuidePage() {
             ③ 핵심 실천 행동: 8CORE (성공 습관 8가지)
           </h2>
           <a
-            href={ytLink(1436)}
+            href={ytLink(KO_VIDEO_URL, 1436)}
             target="_blank"
             rel="noopener noreferrer"
             className="text-xs text-gray-400 hover:text-brand-600"
@@ -143,7 +339,7 @@ export default function GuidePage() {
                   </p>
                 </div>
                 <a
-                  href={ytLink(item.timestamp)}
+                  href={ytLink(KO_VIDEO_URL, item.timestamp)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="shrink-0 text-xs text-gray-400 hover:text-brand-600"
@@ -170,14 +366,12 @@ export default function GuidePage() {
               className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm"
             >
               <div className="flex items-start justify-between gap-2">
-                <p className="text-sm font-semibold text-gray-800">
-                  {point.title}
-                </p>
+                <p className="text-sm font-semibold text-gray-800">{point.title}</p>
                 <span className="shrink-0 space-x-2 text-xs text-gray-400">
                   {point.timestamps.map((t) => (
                     <a
                       key={t}
-                      href={ytLink(t)}
+                      href={ytLink(KO_VIDEO_URL, t)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="hover:text-brand-600"
