@@ -120,7 +120,7 @@ create or replace function public.create_group(p_name text, p_password text)
 returns table (id uuid, name text)
 language plpgsql
 security definer
-set search_path = public
+set search_path = public, extensions
 as $$
 declare
   v_group_id uuid;
@@ -157,7 +157,7 @@ create or replace function public.join_group(p_name text, p_password text)
 returns table (id uuid, name text)
 language plpgsql
 security definer
-set search_path = public
+set search_path = public, extensions
 as $$
 declare
   v_group record;
