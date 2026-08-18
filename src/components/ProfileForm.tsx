@@ -3,6 +3,9 @@
 import { useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 
+const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+const MAX_BYTES = 2 * 1024 * 1024;
+
 type ProfileFormProps = {
   currentName: string;
   currentAvatar: string | null;
@@ -24,9 +27,23 @@ export default function ProfileForm({
 
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
-    if (file) {
-      setPreview(URL.createObjectURL(file));
+    if (!file) return;
+
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      setError(
+        "JPG, PNG, WEBP, GIF 이미지만 업로드할 수 있어요. (HEIC 등은 지원하지 않아요)"
+      );
+      e.target.value = "";
+      return;
     }
+    if (file.size > MAX_BYTES) {
+      setError("이미지 용량은 2MB 이하여야 해요.");
+      e.target.value = "";
+      return;
+    }
+
+    setError(null);
+    setPreview(URL.createObjectURL(file));
   }
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -74,11 +91,13 @@ export default function ProfileForm({
             ref={fileInputRef}
             type="file"
             name="avatar"
-            accept="image/*"
+            accept={ALLOWED_TYPES.join(",")}
             onChange={handleFileChange}
             className="hidden"
           />
-          <p className="mt-1 text-[11px] text-gray-400">2MB 이하 이미지</p>
+          <p className="mt-1 text-[11px] text-gray-400">
+            JPG/PNG/WEBP/GIF, 2MB 이하
+          </p>
         </div>
       </div>
 

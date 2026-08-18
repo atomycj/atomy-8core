@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 
 const MAX_AVATAR_BYTES = 2 * 1024 * 1024;
+const ALLOWED_AVATAR_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
 
 export async function updateProfile(formData: FormData) {
   const supabase = await createClient();
@@ -26,14 +27,16 @@ export async function updateProfile(formData: FormData) {
   };
 
   if (avatarFile instanceof File && avatarFile.size > 0) {
-    if (!avatarFile.type.startsWith("image/")) {
-      throw new Error("이미지 파일만 업로드할 수 있습니다.");
+    if (!ALLOWED_AVATAR_TYPES.includes(avatarFile.type)) {
+      throw new Error(
+        "JPG, PNG, WEBP, GIF 이미지만 업로드할 수 있습니다. (HEIC 등은 지원하지 않아요)"
+      );
     }
     if (avatarFile.size > MAX_AVATAR_BYTES) {
       throw new Error("이미지 용량은 2MB 이하여야 합니다.");
     }
 
-    const ext = avatarFile.name.split(".").pop() || "jpg";
+    const ext = avatarFile.type.split("/")[1];
     const path = `${user.id}/avatar.${ext}`;
 
     const { error: uploadError } = await supabase.storage
