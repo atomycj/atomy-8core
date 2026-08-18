@@ -24,8 +24,8 @@ export default function Navbar({
 
   return (
     <header className="sticky top-0 z-10 border-b border-gray-100 bg-white/80 backdrop-blur">
-      <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-3">
-        <Link href="/dashboard" className="flex items-center gap-2">
+      <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-x-6 gap-y-2 px-4 py-3 md:flex-nowrap">
+        <Link href="/dashboard" className="flex shrink-0 items-center gap-2">
           <Image
             src="/logo-nav.png"
             alt={dict.appName}
@@ -34,51 +34,53 @@ export default function Navbar({
             priority
             className="h-8 w-auto"
           />
-          <span className="text-sm font-bold text-gray-900">{dict.appName}</span>
+          <span className="whitespace-nowrap text-sm font-bold text-gray-900">
+            {dict.appName}
+          </span>
         </Link>
 
-        <nav className="flex items-center gap-1 text-sm font-medium text-gray-500">
+        <nav className="flex flex-wrap items-center gap-1 text-sm font-medium text-gray-500">
           <Link
             href="/dashboard"
-            className="rounded-lg px-3 py-1.5 hover:bg-gray-100 hover:text-gray-900"
+            className="whitespace-nowrap rounded-lg px-2.5 py-1.5 hover:bg-gray-100 hover:text-gray-900"
           >
             {dict.nav.dashboard}
           </Link>
           <Link
             href={`/record/${today}`}
-            className="rounded-lg px-3 py-1.5 hover:bg-gray-100 hover:text-gray-900"
+            className="whitespace-nowrap rounded-lg px-2.5 py-1.5 hover:bg-gray-100 hover:text-gray-900"
           >
             {dict.nav.today}
           </Link>
           <Link
             href="/history"
-            className="rounded-lg px-3 py-1.5 hover:bg-gray-100 hover:text-gray-900"
+            className="whitespace-nowrap rounded-lg px-2.5 py-1.5 hover:bg-gray-100 hover:text-gray-900"
           >
             {dict.nav.history}
           </Link>
           <Link
             href="/groups"
-            className="rounded-lg px-3 py-1.5 hover:bg-gray-100 hover:text-gray-900"
+            className="whitespace-nowrap rounded-lg px-2.5 py-1.5 hover:bg-gray-100 hover:text-gray-900"
           >
             {dict.nav.groups}
           </Link>
           <Link
             href="/guide"
-            className="rounded-lg px-3 py-1.5 hover:bg-gray-100 hover:text-gray-900"
+            className="whitespace-nowrap rounded-lg px-2.5 py-1.5 hover:bg-gray-100 hover:text-gray-900"
           >
             {dict.nav.guide}
           </Link>
           {isAdmin && (
             <Link
               href="/admin"
-              className="rounded-lg px-3 py-1.5 hover:bg-gray-100 hover:text-gray-900"
+              className="whitespace-nowrap rounded-lg px-2.5 py-1.5 hover:bg-gray-100 hover:text-gray-900"
             >
               {dict.nav.admin}
             </Link>
           )}
         </nav>
 
-        <div className="flex items-center gap-3">
+        <div className="flex shrink-0 items-center gap-3">
           <LanguageToggle locale={locale} />
           <Link
             href="/profile"

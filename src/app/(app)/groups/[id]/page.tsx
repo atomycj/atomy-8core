@@ -9,6 +9,7 @@ import { getDictionary } from "@/lib/i18n/dictionaries";
 import { formatGroupDetailMemberCount } from "@/lib/i18n/format";
 import ViewTabs from "@/components/ViewTabs";
 import ViewNavHeader from "@/components/ViewNavHeader";
+import TodayLink from "@/components/TodayLink";
 import GroupMemberCard from "@/components/GroupMemberCard";
 import GroupWeekView from "@/components/dashboard/GroupWeekView";
 import GroupMonthView from "@/components/dashboard/GroupMonthView";
@@ -62,19 +63,36 @@ export default async function GroupDetailPage({
     records.map((r) => [`${r.user_id}_${r.record_date}`, r])
   );
 
+  const today = format(new Date(), "yyyy-MM-dd");
+  const rangeStartStr = format(nav.rangeStart, "yyyy-MM-dd");
+  const rangeEndStr = format(nav.rangeEnd, "yyyy-MM-dd");
+  const isCurrentPeriod = today >= rangeStartStr && today <= rangeEndStr;
+  const todayLinkLabel =
+    view === "day"
+      ? dict.common.today
+      : view === "week"
+        ? dict.common.thisWeek
+        : dict.common.thisMonth;
+
   return (
     <div className="space-y-5">
       <div>
         <Link href="/groups" className="text-xs text-gray-400 hover:text-gray-600">
           {dict.groups.detail.backLink}
         </Link>
-        <div className="mt-1 flex flex-wrap items-center justify-between gap-3">
+        <div className="mt-1 flex flex-wrap items-center justify-between gap-3 md:flex-nowrap">
           <div>
             <h1 className="text-lg font-bold text-gray-900">{group.name}</h1>
             <p className="mt-1 text-sm text-gray-500">
               {formatGroupDetailMemberCount(locale, group.member_count)}
             </p>
           </div>
+          <TodayLink
+            basePath={`/groups/${id}`}
+            view={view}
+            isCurrent={isCurrentPeriod}
+            label={todayLinkLabel}
+          />
           <ViewTabs
             basePath={`/groups/${id}`}
             view={view}

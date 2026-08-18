@@ -8,6 +8,7 @@ import { getDictionary } from "@/lib/i18n/dictionaries";
 import { formatStreak } from "@/lib/i18n/format";
 import ViewTabs from "@/components/ViewTabs";
 import ViewNavHeader from "@/components/ViewNavHeader";
+import TodayLink from "@/components/TodayLink";
 import PersonalDayView from "@/components/dashboard/PersonalDayView";
 import PersonalWeekView from "@/components/dashboard/PersonalWeekView";
 import PersonalMonthView from "@/components/dashboard/PersonalMonthView";
@@ -57,13 +58,29 @@ export default async function DashboardPage({
   const calendarDays = eachDayOfInterval({ start: gridStart, end: gridEnd });
   const weekDates = calendarDays.map((d) => format(d, "yyyy-MM-dd"));
 
+  const rangeStartStr = format(nav.rangeStart, "yyyy-MM-dd");
+  const rangeEndStr = format(nav.rangeEnd, "yyyy-MM-dd");
+  const isCurrentPeriod = today >= rangeStartStr && today <= rangeEndStr;
+  const todayLinkLabel =
+    view === "day"
+      ? dict.common.today
+      : view === "week"
+        ? dict.common.thisWeek
+        : dict.common.thisMonth;
+
   return (
     <div className="space-y-5">
-      <div className="flex flex-wrap items-center justify-between gap-3">
+      <div className="flex flex-wrap items-center justify-between gap-3 md:flex-nowrap">
         <div>
           <h1 className="text-lg font-bold text-gray-900">{dict.dashboard.title}</h1>
           <p className="mt-1 text-sm text-gray-500">{formatStreak(locale, streak)}</p>
         </div>
+        <TodayLink
+          basePath="/dashboard"
+          view={view}
+          isCurrent={isCurrentPeriod}
+          label={todayLinkLabel}
+        />
         <ViewTabs
           basePath="/dashboard"
           view={view}

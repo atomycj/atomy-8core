@@ -19,6 +19,8 @@ export interface Dictionary {
     saved: string;
     notWritten: string;
     today: string;
+    thisWeek: string;
+    thisMonth: string;
   };
   login: {
     subtitle: string;
@@ -130,6 +132,8 @@ const dictionaries: Record<Locale, Dictionary> = {
       saved: "저장됨",
       notWritten: "(미작성)",
       today: "오늘",
+      thisWeek: "이번 주",
+      thisMonth: "이번 달",
     },
     login: {
       subtitle: "매일의 8가지 성공습관을 기록하고 팀과 공유하세요",
@@ -240,6 +244,8 @@ const dictionaries: Record<Locale, Dictionary> = {
       saved: "Saved",
       notWritten: "(Not written)",
       today: "Today",
+      thisWeek: "This week",
+      thisMonth: "This month",
     },
     login: {
       subtitle: "Track your daily 8 Core habits and share them with your team",
