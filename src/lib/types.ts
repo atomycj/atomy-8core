@@ -24,6 +24,7 @@ export type Profile = {
   id: string;
   email: string;
   display_name: string | null;
+  avatar_url: string | null;
   can_create_groups: boolean;
   created_at: string;
 };

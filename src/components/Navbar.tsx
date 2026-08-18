@@ -56,12 +56,15 @@ export default function Navbar({ userName, userAvatar, isAdmin }: NavbarProps) {
         </nav>
 
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2">
+          <Link
+            href="/profile"
+            className="flex items-center gap-2 rounded-lg px-1.5 py-1 hover:bg-gray-100"
+          >
             {userAvatar ? (
               <img
                 src={userAvatar}
                 alt={userName}
-                className="h-7 w-7 rounded-full"
+                className="h-7 w-7 rounded-full object-cover"
               />
             ) : (
               <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gray-200 text-xs font-semibold text-gray-600">
@@ -71,7 +74,7 @@ export default function Navbar({ userName, userAvatar, isAdmin }: NavbarProps) {
             <span className="hidden text-sm text-gray-700 sm:inline">
               {userName}
             </span>
-          </div>
+          </Link>
           <form action="/auth/signout" method="post">
             <button
               type="submit"

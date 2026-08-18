@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { CORE_ITEMS, type CoreItemKey } from "@/lib/core-items";
 import type { DailyRecord } from "@/lib/types";
+import { getViewerProfile } from "@/lib/profile";
 import RecordForm from "@/components/RecordForm";
 import { saveRecord } from "./actions";
 
@@ -34,10 +35,7 @@ export default async function RecordPage({
     CORE_ITEMS.map((item) => [item.key, typedRecord?.[item.key] ?? ""])
   ) as Record<CoreItemKey, string>;
 
-  const userName =
-    (user.user_metadata?.full_name as string | undefined) ??
-    (user.email as string | undefined) ??
-    "사용자";
+  const { displayName: userName } = await getViewerProfile(supabase, user);
 
   return (
     <RecordForm
