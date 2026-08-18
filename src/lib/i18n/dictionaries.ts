@@ -8,6 +8,7 @@ export interface Dictionary {
     history: string;
     groups: string;
     guide: string;
+    help: string;
     admin: string;
     signOut: string;
   };
@@ -136,6 +137,7 @@ const dictionaries: Record<Locale, Dictionary> = {
       history: "히스토리",
       groups: "그룹",
       guide: "가이드",
+      help: "사용법",
       admin: "관리자",
       signOut: "로그아웃",
     },
@@ -264,6 +266,7 @@ const dictionaries: Record<Locale, Dictionary> = {
       history: "History",
       groups: "Groups",
       guide: "Guide",
+      help: "How to Use",
       admin: "Admin",
       signOut: "Sign out",
     },

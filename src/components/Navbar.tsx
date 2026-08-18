@@ -70,6 +70,12 @@ export default function Navbar({
           >
             {dict.nav.guide}
           </Link>
+          <Link
+            href="/onboarding"
+            className="whitespace-nowrap rounded-lg px-2.5 py-1.5 hover:bg-gray-100 hover:text-gray-900"
+          >
+            {dict.nav.help}
+          </Link>
           {isAdmin && (
             <Link
               href="/admin"

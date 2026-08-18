@@ -12,6 +12,7 @@
 - **그룹**: 비밀번호로 그룹을 만들고 참여해서, 같은 그룹 멤버끼리 서로의 8코어 기록을 조회 (그룹도 일간/주간/월간 뷰 지원)
 - **관리자**: `atomycj@gmail.com` 계정이 사용자별로 그룹 생성 권한을 지정 (`/admin`)
 - **프로필 수정**: 표시 이름과 프로필 사진을 직접 설정 (`/profile`)
+- **사용법 안내**: 앱 기능을 소개하는 온보딩 페이지 (`/onboarding`), 최초 로그인 시 자동 진입, 헤더의 "사용법" 메뉴로 언제든 다시 확인 가능
 - **데이터베이스 저장**: Supabase(Postgres) + Row Level Security로 사용자별 기록을 안전하게 저장
 
 ## 기술 스택
@@ -29,7 +30,8 @@
    - 관리자 이메일은 `atomycj@gmail.com`으로 하드코딩되어 있습니다. 다른 이메일로 바꾸려면 `schema_groups.sql` 안의 `'atomycj@gmail.com'` 문자열과 `src/lib/admin.ts`의 `ADMIN_EMAIL`을 함께 수정하세요.
 4. 이어서 `supabase/schema_profile.sql`을 실행합니다. 프로필 사진/이름을 본인이 수정할 수 있는 권한과, 프로필 사진을 저장할 `avatars` 스토리지 버킷·정책이 추가됩니다.
 5. 이어서 `supabase/schema_group_management.sql`을 실행합니다. 그룹 나가기/삭제/이름 변경 RPC 함수가 추가됩니다 (삭제·이름 변경은 그룹장만 가능).
-6. **Project Settings → API**에서 `Project URL`과 `anon public key`를 복사합니다.
+6. 이어서 `supabase/schema_onboarding.sql`을 실행합니다. 최초 로그인 시 온보딩 페이지로 보내기 위한 `profiles.onboarding_seen` 컬럼이 추가됩니다 (이미 가입된 사용자는 자동으로 "이미 봄" 처리됩니다).
+7. **Project Settings → API**에서 `Project URL`과 `anon public key`를 복사합니다.
 
 ### 2. 구글 로그인(OAuth) 연동
 
@@ -83,6 +85,8 @@ src/
       groups/              그룹 목록·생성·참여, 그룹 상세(일간/주간/월간 뷰)
       admin/               관리자 전용: 그룹 생성 권한 관리
       profile/             표시 이름·프로필 사진 수정
+      onboarding/          사용법 안내(온보딩) 페이지, 최초 로그인 시 자동 진입
+      guide/               8코어 성공습관 가이드
   components/
     dashboard/             PersonalDayView, PersonalWeekView, PersonalMonthView, GroupWeekView, GroupMonthView
     Navbar, RecordForm, ShareButton, GroupForms, GroupMemberCard, AdminUserRow, ProfileForm, ViewTabs, ViewNavHeader
@@ -97,4 +101,5 @@ supabase/schema.sql         DB 테이블 및 RLS 정책 (daily_records)
 supabase/schema_groups.sql  그룹/관리자 기능 스키마 (profiles, groups, group_members, RPC)
 supabase/schema_profile.sql 프로필 수정 권한 + avatars 스토리지 버킷/정책
 supabase/schema_group_management.sql  그룹 나가기/삭제/이름 변경 RPC (삭제·이름 변경은 그룹장 전용)
+supabase/schema_onboarding.sql  최초 로그인 온보딩용 profiles.onboarding_seen 컬럼
 ```
