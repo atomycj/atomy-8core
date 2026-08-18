@@ -83,6 +83,21 @@ export interface Dictionary {
       completeDays: string;
       avgProgress: string;
     };
+    manage: {
+      title: string;
+      ownerBadge: string;
+      renameLabel: string;
+      renameSubmit: string;
+      renameSubmitting: string;
+      renameSuccess: string;
+      leaveButton: string;
+      leaveConfirm: string;
+      leaveSubmitting: string;
+      leaveOwnerNotice: string;
+      deleteButton: string;
+      deleteConfirm: string;
+      deleteSubmitting: string;
+    };
   };
   admin: {
     title: string;
@@ -196,6 +211,22 @@ const dictionaries: Record<Locale, Dictionary> = {
         completeDays: "완주일",
         avgProgress: "평균 진행률",
       },
+      manage: {
+        title: "그룹 관리",
+        ownerBadge: "그룹장",
+        renameLabel: "그룹 이름",
+        renameSubmit: "이름 변경",
+        renameSubmitting: "변경 중...",
+        renameSuccess: "이름을 변경했어요.",
+        leaveButton: "그룹 나가기",
+        leaveConfirm: "정말 이 그룹에서 나가시겠어요?",
+        leaveSubmitting: "나가는 중...",
+        leaveOwnerNotice: "그룹장은 나가기 대신 그룹을 삭제할 수 있어요.",
+        deleteButton: "그룹 삭제",
+        deleteConfirm:
+          "그룹을 삭제하면 모든 멤버가 그룹에서 제외됩니다. 정말 삭제하시겠어요?",
+        deleteSubmitting: "삭제 중...",
+      },
     },
     admin: {
       title: "관리자",
@@ -307,6 +338,22 @@ const dictionaries: Record<Locale, Dictionary> = {
         activeDays: "Active days",
         completeDays: "Complete days",
         avgProgress: "Avg. progress",
+      },
+      manage: {
+        title: "Manage group",
+        ownerBadge: "Owner",
+        renameLabel: "Group name",
+        renameSubmit: "Rename",
+        renameSubmitting: "Renaming...",
+        renameSuccess: "Name updated.",
+        leaveButton: "Leave group",
+        leaveConfirm: "Are you sure you want to leave this group?",
+        leaveSubmitting: "Leaving...",
+        leaveOwnerNotice: "As the owner, you can delete the group instead of leaving.",
+        deleteButton: "Delete group",
+        deleteConfirm:
+          "Deleting the group removes all members from it. Are you sure?",
+        deleteSubmitting: "Deleting...",
       },
     },
     admin: {

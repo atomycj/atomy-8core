@@ -11,8 +11,10 @@ import ViewTabs from "@/components/ViewTabs";
 import ViewNavHeader from "@/components/ViewNavHeader";
 import TodayLink from "@/components/TodayLink";
 import GroupMemberCard from "@/components/GroupMemberCard";
+import GroupManagePanel from "@/components/GroupManagePanel";
 import GroupWeekView from "@/components/dashboard/GroupWeekView";
 import GroupMonthView from "@/components/dashboard/GroupMonthView";
+import { deleteGroupAction, leaveGroupAction, renameGroupAction } from "./actions";
 
 export default async function GroupDetailPage({
   params,
@@ -101,6 +103,16 @@ export default async function GroupDetailPage({
           />
         </div>
       </div>
+
+      <GroupManagePanel
+        groupId={id}
+        groupName={group.name}
+        isOwner={group.is_owner}
+        dict={dict.groups.manage}
+        leaveAction={leaveGroupAction}
+        deleteAction={deleteGroupAction}
+        renameAction={renameGroupAction}
+      />
 
       <ViewNavHeader
         basePath={`/groups/${id}`}
