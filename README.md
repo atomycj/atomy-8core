@@ -31,7 +31,8 @@
 4. 이어서 `supabase/schema_profile.sql`을 실행합니다. 프로필 사진/이름을 본인이 수정할 수 있는 권한과, 프로필 사진을 저장할 `avatars` 스토리지 버킷·정책이 추가됩니다.
 5. 이어서 `supabase/schema_group_management.sql`을 실행합니다. 그룹 나가기/삭제/이름 변경 RPC 함수가 추가됩니다 (삭제·이름 변경은 그룹장만 가능).
 6. 이어서 `supabase/schema_onboarding.sql`을 실행합니다. 최초 로그인 시 온보딩 페이지로 보내기 위한 `profiles.onboarding_seen` 컬럼이 추가됩니다 (이미 가입된 사용자는 자동으로 "이미 봄" 처리됩니다).
-7. **Project Settings → API**에서 `Project URL`과 `anon public key`를 복사합니다.
+7. 이어서 `supabase/schema_fix_group_records_rls.sql`을 실행합니다. 그룹원끼리 서로의 기록이 보이지 않던 RLS 버그 수정입니다 (`schema_groups.sql`을 먼저 실행한 프로젝트라면 꼭 실행하세요. 이 저장소를 새로 클론해서 schema_groups.sql을 이미 수정된 최신 버전으로 실행한다면 이 단계는 필요 없습니다).
+8. **Project Settings → API**에서 `Project URL`과 `anon public key`를 복사합니다.
 
 ### 2. 구글 로그인(OAuth) 연동
 
@@ -102,4 +103,5 @@ supabase/schema_groups.sql  그룹/관리자 기능 스키마 (profiles, groups,
 supabase/schema_profile.sql 프로필 수정 권한 + avatars 스토리지 버킷/정책
 supabase/schema_group_management.sql  그룹 나가기/삭제/이름 변경 RPC (삭제·이름 변경은 그룹장 전용)
 supabase/schema_onboarding.sql  최초 로그인 온보딩용 profiles.onboarding_seen 컬럼
+supabase/schema_fix_group_records_rls.sql  그룹원 기록이 안 보이던 RLS 버그 수정
 ```
